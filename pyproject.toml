@@ -1,6 +1,6 @@
 [project]
 name = "pykabutan"
-version = "0.1.0"
+version = "0.1.1"
 description = "A clean, beginner-friendly Python library for scraping kabutan.jp"
 readme = "README.md"
 requires-python = ">=3.10"
