@@ -6,7 +6,7 @@
 def search_by_industry(
     industry: str,
     market: str = "all"
-) -> list[SearchResult]
+) -> list[Ticker]
 ```
 
 Search for stocks by industry classification.
@@ -18,7 +18,7 @@ Search for stocks by industry classification.
 | `industry` | `str` | required | Industry name (Japanese) |
 | `market` | `str` | `"all"` | Market filter |
 
-**Returns:** List of `SearchResult` named tuples
+**Returns:** List of `Ticker` objects
 
 **Raises:** `ValueError` if industry is not valid
 
@@ -32,6 +32,10 @@ results = pk.search_by_industry("電気機器")
 
 # Filter by market
 results = pk.search_by_industry("電気機器", market="Prime")
+
+# Access data
+for t in results[:5]:
+    print(t.code, t.profile.name)
 ```
 
 ---
@@ -42,7 +46,7 @@ results = pk.search_by_industry("電気機器", market="Prime")
 def search_by_theme(
     theme: str,
     market: str = "all"
-) -> list[SearchResult]
+) -> list[Ticker]
 ```
 
 Search for stocks by theme or keyword.
@@ -54,7 +58,7 @@ Search for stocks by theme or keyword.
 | `theme` | `str` | required | Theme keyword (Japanese recommended) |
 | `market` | `str` | `"all"` | Market filter |
 
-**Returns:** List of `SearchResult` named tuples
+**Returns:** List of `Ticker` objects
 
 **Example:**
 
@@ -65,6 +69,10 @@ import pykabutan as pk
 results = pk.search_by_theme("人工知能")
 results = pk.search_by_theme("半導体")
 results = pk.search_by_theme("EV")
+
+# Access data
+for t in results[:5]:
+    print(t.code, t.profile.name)
 ```
 
 ---
@@ -91,29 +99,23 @@ for industry in industries:
 
 ---
 
-## SearchResult
+## Working with Search Results
 
-Named tuple returned by search functions:
-
-```python
-SearchResult = namedtuple("SearchResult", ["code", "name", "market"])
-```
-
-| Field | Type | Description |
-|-------|------|-------------|
-| `code` | `str` | Stock code |
-| `name` | `str` | Company name |
-| `market` | `str` | Market (may be empty) |
-
-**Example:**
+Search functions return `Ticker` objects:
 
 ```python
 results = pk.search_by_industry("電気機器")
-for result in results:
-    print(result.code)   # "6758"
-    print(result.name)   # "ソニーグループ"
-    print(result.market) # "東証Ｐ"
+
+for t in results[:5]:
+    print(t.code)           # Stock code (no HTTP request)
+    print(t.profile.name)   # Company name (HTTP request)
+    print(t.profile.market) # Market (cached after first access)
 ```
+
+| Access | HTTP Request? | Description |
+|--------|---------------|-------------|
+| `t.code` | No | Stock code available immediately |
+| `t.profile.*` | Yes (first access) | Profile data fetched on demand |
 
 ---
 

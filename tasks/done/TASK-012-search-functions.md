@@ -25,10 +25,10 @@ tickers = pk.search_by_industry("電気機器", market="Prime")
 tickers = pk.search_by_theme("AI")
 tickers = pk.search_by_theme("半導体", market="Growth")
 
-# Results have cached basic info
-for t in tickers:
-    print(t.code, t.name)        # From search results (no HTTP)
-    print(t.profile.description)  # HTTP request for details
+# Results are Ticker objects
+for t in tickers[:5]:
+    print(t.code, t.profile.name)  # Profile via HTTP request
+    print(t.profile.description)   # Cached after first access
 ```
 
 ## Industry Mapping

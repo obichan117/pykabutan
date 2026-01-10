@@ -81,8 +81,8 @@ Search by industry:
 # Get all electronics companies
 results = pk.search_by_industry("電気機器")
 
-for ticker in results[:5]:
-    print(f"{ticker.code}: {ticker.name}")
+for t in results[:5]:
+    print(f"{t.code}: {t.profile.name}")
 ```
 
 Search by theme:

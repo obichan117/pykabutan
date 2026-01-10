@@ -13,8 +13,8 @@ import pykabutan as pk
 results = pk.search_by_industry("電気機器")
 
 print(f"Found {len(results)} stocks")
-for ticker in results[:5]:
-    print(f"{ticker.code}: {ticker.name}")
+for t in results[:5]:
+    print(f"{t.code}: {t.profile.name}")
 ```
 
 ### Available Industries
@@ -90,29 +90,28 @@ results = pk.search_by_theme("人工知能", market="Prime")
 
 ## Return Value
 
-Both search functions return a list of `SearchResult` named tuples:
+Both search functions return a list of `Ticker` objects:
 
 ```python
 results = pk.search_by_industry("電気機器")
 
-for result in results:
-    print(result.code)   # Stock code
-    print(result.name)   # Company name
-    print(result.market) # Market (if available)
+for t in results[:5]:
+    print(t.code)          # Stock code (no HTTP request)
+    print(t.profile.name)  # Company name (HTTP request)
 ```
 
-### Create Ticker from Result
+### Accessing Profile Data
 
 ```python
 results = pk.search_by_industry("電気機器")
 
-# Get the first result as a Ticker
-first = results[0]
-ticker = pk.Ticker(first.code)
+# Each result is a Ticker object
+ticker = results[0]
 
-# Access full profile
+# Access full profile (triggers HTTP request)
 print(ticker.profile.name)
 print(ticker.profile.per)
+print(ticker.profile.market)
 ```
 
 ## Error Handling

@@ -67,6 +67,8 @@ warn_unused_ignores = true
 
 [dependency-groups]
 dev = [
+    "build>=1.4.0",
     "mkdocs>=1.6.1",
     "mkdocs-material>=9.7.1",
+    "twine>=6.2.0",
 ]

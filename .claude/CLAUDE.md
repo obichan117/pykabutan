@@ -60,8 +60,8 @@ tickers = pk.search_by_industry("電気機器")
 tickers = pk.search_by_theme("AI")
 
 # Search results have cached basic info from search page
-for t in tickers:
-    print(t.code, t.name)  # No HTTP request (cached from search)
+for t in tickers[:5]:
+    print(t.code, t.profile.name)  # HTTP request for each profile
     print(t.profile.description)  # HTTP request (detailed info)
 ```
 

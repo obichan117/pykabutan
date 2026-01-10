@@ -232,7 +232,7 @@ See `.claude/CLAUDE.md` for full specification.
 import pykabutan as pk
 
 ticker = pk.Ticker("7203")
-ticker.profile.name           # Lazy loaded, cached
+ticker.profile.name           # Lazy loaded, cached (HTTP request)
 ticker.profile.per
 ticker.history(period="30d")  # yfinance style
 ticker.news(mode="earnings")

@@ -148,7 +148,7 @@ Find stocks similar to this one:
 similar = ticker.similar_stocks()
 
 for t in similar:
-    print(f"{t.code}: {t.name}")
+    print(f"{t.code}: {t.profile.name}")
 ```
 
 ## Caching

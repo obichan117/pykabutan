@@ -28,8 +28,8 @@ print(df)
 
 # Search by industry
 results = pk.search_by_industry("電気機器")
-for t in results:
-    print(t.code, t.name)
+for t in results[:5]:
+    print(t.code, t.profile.name)
 
 # Search by theme
 results = pk.search_by_theme("AI")
