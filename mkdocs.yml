@@ -1,0 +1,56 @@
+site_name: pykabutan
+site_description: Python library for scraping Japanese stock data from kabutan.jp
+site_url: https://obichan117.github.io/pykabutan/
+repo_url: https://github.com/obichan117/pykabutan
+repo_name: obichan117/pykabutan
+
+theme:
+  name: material
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - content.code.copy
+    - content.code.annotate
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - search.highlight
+    - search.suggest
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - admonition
+  - pymdownx.details
+  - tables
+  - attr_list
+
+nav:
+  - Home: index.md
+  - Getting Started: getting-started.md
+  - User Guide:
+      - Ticker: guide/ticker.md
+      - Search: guide/search.md
+      - Configuration: guide/config.md
+  - API Reference:
+      - Ticker: api/ticker.md
+      - Profile: api/profile.md
+      - Search: api/search.md
+      - Config: api/config.md
+      - Exceptions: api/exceptions.md
