@@ -53,6 +53,8 @@
       
     
     
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -631,7 +633,7 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#search_by_industry" class="md-nav__link">
+  <a href="#pykabutan.search_by_industry" class="md-nav__link">
     <span class="md-ellipsis">
       
         search_by_industry
@@ -642,7 +644,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#search_by_theme" class="md-nav__link">
+  <a href="#pykabutan.search_by_theme" class="md-nav__link">
     <span class="md-ellipsis">
       
         search_by_theme
@@ -653,43 +655,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#list_industries" class="md-nav__link">
+  <a href="#pykabutan.list_industries" class="md-nav__link">
     <span class="md-ellipsis">
       
         list_industries
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#working-with-search-results" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Working with Search Results
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#market-values" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Market Values
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#industries" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Industries
       
     </span>
   </a>
@@ -795,7 +764,7 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#search_by_industry" class="md-nav__link">
+  <a href="#pykabutan.search_by_industry" class="md-nav__link">
     <span class="md-ellipsis">
       
         search_by_industry
@@ -806,7 +775,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#search_by_theme" class="md-nav__link">
+  <a href="#pykabutan.search_by_theme" class="md-nav__link">
     <span class="md-ellipsis">
       
         search_by_theme
@@ -817,43 +786,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#list_industries" class="md-nav__link">
+  <a href="#pykabutan.list_industries" class="md-nav__link">
     <span class="md-ellipsis">
       
         list_industries
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#working-with-search-results" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Working with Search Results
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#market-values" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Market Values
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#industries" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Industries
       
     </span>
   </a>
@@ -881,258 +817,264 @@
 
 
 <h1 id="search-functions">Search Functions</h1>
-<h2 id="search_by_industry">search_by_industry</h2>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">search_by_industry</span><span class="p">(</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">industry</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="n">market</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;all&quot;</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Ticker</span><span class="p">]</span>
-</span></code></pre></div>
-<p>Search for stocks by industry classification.</p>
-<p><strong>Parameters:</strong></p>
-<table>
-<thead>
-<tr>
-<th>Name</th>
-<th>Type</th>
-<th>Default</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>industry</code></td>
-<td><code>str</code></td>
-<td>required</td>
-<td>Industry name (Japanese)</td>
-</tr>
-<tr>
-<td><code>market</code></td>
-<td><code>str</code></td>
-<td><code>"all"</code></td>
-<td>Market filter</td>
-</tr>
-</tbody>
-</table>
-<p><strong>Returns:</strong> List of <code>Ticker</code> objects</p>
-<p><strong>Raises:</strong> <code>ValueError</code> if industry is not valid</p>
-<p><strong>Example:</strong></p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">pykabutan</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pk</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="c1"># Search electronics industry</span>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="n">results</span> <span class="o">=</span> <span class="n">pk</span><span class="o">.</span><span class="n">search_by_industry</span><span class="p">(</span><span class="s2">&quot;電気機器&quot;</span><span class="p">)</span>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="c1"># Filter by market</span>
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="n">results</span> <span class="o">=</span> <span class="n">pk</span><span class="o">.</span><span class="n">search_by_industry</span><span class="p">(</span><span class="s2">&quot;電気機器&quot;</span><span class="p">,</span> <span class="n">market</span><span class="o">=</span><span class="s2">&quot;Prime&quot;</span><span class="p">)</span>
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>
-</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="c1"># Access data</span>
-</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">results</span><span class="p">[:</span><span class="mi">5</span><span class="p">]:</span>
-</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">code</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-</span></code></pre></div>
-<hr />
-<h2 id="search_by_theme">search_by_theme</h2>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">search_by_theme</span><span class="p">(</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    <span class="n">theme</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>    <span class="n">market</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;all&quot;</span>
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Ticker</span><span class="p">]</span>
-</span></code></pre></div>
-<p>Search for stocks by theme or keyword.</p>
-<p><strong>Parameters:</strong></p>
-<table>
-<thead>
-<tr>
-<th>Name</th>
-<th>Type</th>
-<th>Default</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>theme</code></td>
-<td><code>str</code></td>
-<td>required</td>
-<td>Theme keyword (Japanese recommended)</td>
-</tr>
-<tr>
-<td><code>market</code></td>
-<td><code>str</code></td>
-<td><code>"all"</code></td>
-<td>Market filter</td>
-</tr>
-</tbody>
-</table>
-<p><strong>Returns:</strong> List of <code>Ticker</code> objects</p>
-<p><strong>Example:</strong></p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">pykabutan</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pk</span>
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="c1"># Search by theme (use Japanese for best results)</span>
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="n">results</span> <span class="o">=</span> <span class="n">pk</span><span class="o">.</span><span class="n">search_by_theme</span><span class="p">(</span><span class="s2">&quot;人工知能&quot;</span><span class="p">)</span>
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="n">results</span> <span class="o">=</span> <span class="n">pk</span><span class="o">.</span><span class="n">search_by_theme</span><span class="p">(</span><span class="s2">&quot;半導体&quot;</span><span class="p">)</span>
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="n">results</span> <span class="o">=</span> <span class="n">pk</span><span class="o">.</span><span class="n">search_by_theme</span><span class="p">(</span><span class="s2">&quot;EV&quot;</span><span class="p">)</span>
-</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>
-</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="c1"># Access data</span>
-</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">results</span><span class="p">[:</span><span class="mi">5</span><span class="p">]:</span>
-</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">code</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-</span></code></pre></div>
-<hr />
-<h2 id="list_industries">list_industries</h2>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">list_industries</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
-</span></code></pre></div>
-<p>Get list of all available industry names.</p>
-<p><strong>Returns:</strong> List of 33 industry names (Japanese)</p>
-<p><strong>Example:</strong></p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">pykabutan</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pk</span>
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="n">industries</span> <span class="o">=</span> <span class="n">pk</span><span class="o">.</span><span class="n">list_industries</span><span class="p">()</span>
-</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="k">for</span> <span class="n">industry</span> <span class="ow">in</span> <span class="n">industries</span><span class="p">:</span>
-</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">industry</span><span class="p">)</span>
-</span></code></pre></div>
-<hr />
-<h2 id="working-with-search-results">Working with Search Results</h2>
-<p>Search functions return <code>Ticker</code> objects:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">results</span> <span class="o">=</span> <span class="n">pk</span><span class="o">.</span><span class="n">search_by_industry</span><span class="p">(</span><span class="s2">&quot;電気機器&quot;</span><span class="p">)</span>
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>
-</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">results</span><span class="p">[:</span><span class="mi">5</span><span class="p">]:</span>
-</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">code</span><span class="p">)</span>           <span class="c1"># Stock code (no HTTP request)</span>
-</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>   <span class="c1"># Company name (HTTP request)</span>
-</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">market</span><span class="p">)</span> <span class="c1"># Market (cached after first access)</span>
-</span></code></pre></div>
-<table>
-<thead>
-<tr>
-<th>Access</th>
-<th>HTTP Request?</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>t.code</code></td>
-<td>No</td>
-<td>Stock code available immediately</td>
-</tr>
-<tr>
-<td><code>t.profile.*</code></td>
-<td>Yes (first access)</td>
-<td>Profile data fetched on demand</td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h2 id="market-values">Market Values</h2>
-<p>Valid market filter values:</p>
-<table>
-<thead>
-<tr>
-<th>Value</th>
-<th>Aliases</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>"all"</code></td>
-<td><code>"0"</code></td>
-<td>All markets</td>
-</tr>
-<tr>
-<td><code>"Prime"</code></td>
-<td><code>"東証Ｐ"</code>, <code>"1"</code></td>
-<td>TSE Prime</td>
-</tr>
-<tr>
-<td><code>"Standard"</code></td>
-<td><code>"東証Ｓ"</code>, <code>"2"</code></td>
-<td>TSE Standard</td>
-</tr>
-<tr>
-<td><code>"Growth"</code></td>
-<td><code>"東証Ｇ"</code>, <code>"3"</code></td>
-<td>TSE Growth</td>
-</tr>
-</tbody>
-</table>
-<hr />
-<h2 id="industries">Industries</h2>
-<p>All 33 industry classifications:</p>
-<table>
-<thead>
-<tr>
-<th>Industry</th>
-<th>Industry</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>水産・農林業</td>
-<td>鉱業</td>
-</tr>
-<tr>
-<td>建設業</td>
-<td>食料品</td>
-</tr>
-<tr>
-<td>繊維製品</td>
-<td>パルプ・紙</td>
-</tr>
-<tr>
-<td>化学</td>
-<td>医薬品</td>
-</tr>
-<tr>
-<td>石油・石炭製品</td>
-<td>ゴム製品</td>
-</tr>
-<tr>
-<td>ガラス・土石製品</td>
-<td>鉄鋼</td>
-</tr>
-<tr>
-<td>非鉄金属</td>
-<td>金属製品</td>
-</tr>
-<tr>
-<td>機械</td>
-<td>電気機器</td>
-</tr>
-<tr>
-<td>輸送用機器</td>
-<td>精密機器</td>
-</tr>
-<tr>
-<td>その他製品</td>
-<td>電気・ガス業</td>
-</tr>
-<tr>
-<td>陸運業</td>
-<td>海運業</td>
-</tr>
-<tr>
-<td>空運業</td>
-<td>倉庫・運輸関連業</td>
-</tr>
-<tr>
-<td>情報・通信業</td>
-<td>卸売業</td>
-</tr>
-<tr>
-<td>小売業</td>
-<td>銀行業</td>
-</tr>
-<tr>
-<td>証券、商品先物取引業</td>
-<td>保険業</td>
-</tr>
-<tr>
-<td>その他金融業</td>
-<td>不動産業</td>
-</tr>
-<tr>
-<td>サービス業</td>
-<td></td>
-</tr>
-</tbody>
-</table>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<a id="pykabutan.search_by_industry"></a>
+    <div class="doc doc-contents first">
+
+        <p>Search for stocks by industry.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>industry</code>
+            </td>
+            <td>
+                  <code><span title="str">str</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Industry name in Japanese (e.g., "電気機器", "輸送用機器").
+      See list_industries() for the full list.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>market</code>
+            </td>
+            <td>
+                  <code><span title="str">str</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Market filter — "all", "Prime", "Standard", "Growth",
+    or Japanese names like "東証Ｐ"</p>
+              </div>
+            </td>
+            <td>
+                  <code>&#39;all&#39;</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="list">list</span>[<a class="autorefs autorefs-internal" title="pykabutan.ticker.Ticker" href="../ticker/#pykabutan.Ticker">Ticker</a>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>List of Ticker objects.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<p><span class="doc-section-title">Raises:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="ValueError">ValueError</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>For an unknown industry or market.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<details class="example" open>
+  <summary>Example</summary>
+  <blockquote>
+<blockquote>
+<blockquote>
+<p>tickers = search_by_industry("電気機器")
+for t in tickers[:5]:
+...     print(t.code)</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</details>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<a id="pykabutan.search_by_theme"></a>
+    <div class="doc doc-contents first">
+
+        <p>Search for stocks by theme.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>theme</code>
+            </td>
+            <td>
+                  <code><span title="str">str</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Theme name in Japanese (e.g., "人工知能", "半導体").
+   Must be in Japanese; English terms like "AI" won't match.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>market</code>
+            </td>
+            <td>
+                  <code><span title="str">str</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Market filter — "all", "Prime", "Standard", "Growth"</p>
+              </div>
+            </td>
+            <td>
+                  <code>&#39;all&#39;</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="list">list</span>[<a class="autorefs autorefs-internal" title="pykabutan.ticker.Ticker" href="../ticker/#pykabutan.Ticker">Ticker</a>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>List of Ticker objects (empty for unknown themes).</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<p><span class="doc-section-title">Raises:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="ValueError">ValueError</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>For an unknown market.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<details class="example" open>
+  <summary>Example</summary>
+  <blockquote>
+<blockquote>
+<blockquote>
+<p>tickers = search_by_theme("半導体")
+for t in tickers[:5]:
+...     print(t.code)</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</details>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<a id="pykabutan.list_industries"></a>
+    <div class="doc doc-contents first">
+
+        <p>Get list of industry names usable with search_by_industry().</p>
+
+
+    </div>
+
+</div>
 
 
 

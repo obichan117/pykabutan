@@ -53,6 +53,8 @@
       
     
     
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -1112,11 +1114,11 @@
 </span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="nb">print</span><span class="p">(</span><span class="n">profile</span><span class="o">.</span><span class="n">themes</span><span class="p">)</span>       <span class="c1"># [&#39;EV&#39;, &#39;自動運転&#39;, ...]</span>
 </span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>
 </span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="c1"># Financial metrics</span>
-</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="nb">print</span><span class="p">(</span><span class="n">profile</span><span class="o">.</span><span class="n">per</span><span class="p">)</span>            <span class="c1"># Price-to-earnings ratio</span>
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="nb">print</span><span class="p">(</span><span class="n">profile</span><span class="o">.</span><span class="n">per</span><span class="p">)</span>            <span class="c1"># Price-to-earnings ratio (None if loss-making)</span>
 </span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="nb">print</span><span class="p">(</span><span class="n">profile</span><span class="o">.</span><span class="n">pbr</span><span class="p">)</span>            <span class="c1"># Price-to-book ratio</span>
-</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="nb">print</span><span class="p">(</span><span class="n">profile</span><span class="o">.</span><span class="n">market_cap</span><span class="p">)</span>     <span class="c1"># Market capitalization</span>
-</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="nb">print</span><span class="p">(</span><span class="n">profile</span><span class="o">.</span><span class="n">dividend_yield</span><span class="p">)</span> <span class="c1"># Dividend yield</span>
-</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="nb">print</span><span class="p">(</span><span class="n">profile</span><span class="o">.</span><span class="n">margin_ratio</span><span class="p">)</span>   <span class="c1"># Profit margin</span>
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="nb">print</span><span class="p">(</span><span class="n">profile</span><span class="o">.</span><span class="n">market_cap</span><span class="p">)</span>     <span class="c1"># Market capitalization, in yen</span>
+</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="nb">print</span><span class="p">(</span><span class="n">profile</span><span class="o">.</span><span class="n">dividend_yield</span><span class="p">)</span> <span class="c1"># Dividend yield (%)</span>
+</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="nb">print</span><span class="p">(</span><span class="n">profile</span><span class="o">.</span><span class="n">margin_ratio</span><span class="p">)</span>   <span class="c1"># Margin trading ratio</span>
 </span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>
 </span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a><span class="c1"># Additional info</span>
 </span><span id="__span-1-21"><a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a><span class="nb">print</span><span class="p">(</span><span class="n">profile</span><span class="o">.</span><span class="n">website</span><span class="p">)</span>      <span class="c1"># Company website</span>
@@ -1131,26 +1133,34 @@
 </span></code></pre></div>
 <h2 id="historical-prices">Historical Prices</h2>
 <p>Get historical OHLCV data:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># Default: 30 days of daily data</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># Default: last 30 calendar days of daily data</span>
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="n">df</span> <span class="o">=</span> <span class="n">ticker</span><span class="o">.</span><span class="n">history</span><span class="p">()</span>
 </span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="c1"># Specify period</span>
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="n">df</span> <span class="o">=</span> <span class="n">ticker</span><span class="o">.</span><span class="n">history</span><span class="p">(</span><span class="n">period</span><span class="o">=</span><span class="s2">&quot;7d&quot;</span><span class="p">)</span>   <span class="c1"># Last 7 days</span>
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="n">df</span> <span class="o">=</span> <span class="n">ticker</span><span class="o">.</span><span class="n">history</span><span class="p">(</span><span class="n">period</span><span class="o">=</span><span class="s2">&quot;30d&quot;</span><span class="p">)</span>  <span class="c1"># Last 30 days</span>
-</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="n">df</span> <span class="o">=</span> <span class="n">ticker</span><span class="o">.</span><span class="n">history</span><span class="p">(</span><span class="n">period</span><span class="o">=</span><span class="s2">&quot;90d&quot;</span><span class="p">)</span>  <span class="c1"># Last 90 days</span>
-</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>
-</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="c1"># Specify interval</span>
-</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="n">df</span> <span class="o">=</span> <span class="n">ticker</span><span class="o">.</span><span class="n">history</span><span class="p">(</span><span class="n">interval</span><span class="o">=</span><span class="s2">&quot;day&quot;</span><span class="p">)</span>   <span class="c1"># Daily (default)</span>
-</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="n">df</span> <span class="o">=</span> <span class="n">ticker</span><span class="o">.</span><span class="n">history</span><span class="p">(</span><span class="n">interval</span><span class="o">=</span><span class="s2">&quot;week&quot;</span><span class="p">)</span>  <span class="c1"># Weekly</span>
-</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="n">df</span> <span class="o">=</span> <span class="n">ticker</span><span class="o">.</span><span class="n">history</span><span class="p">(</span><span class="n">interval</span><span class="o">=</span><span class="s2">&quot;month&quot;</span><span class="p">)</span> <span class="c1"># Monthly</span>
-</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>
-</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a><span class="c1"># Specify number of rows</span>
-</span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a><span class="n">df</span> <span class="o">=</span> <span class="n">ticker</span><span class="o">.</span><span class="n">history</span><span class="p">(</span><span class="n">rows</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
-</span><span id="__span-3-16"><a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a>
-</span><span id="__span-3-17"><a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a><span class="c1"># Combine options</span>
-</span><span id="__span-3-18"><a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a><span class="n">df</span> <span class="o">=</span> <span class="n">ticker</span><span class="o">.</span><span class="n">history</span><span class="p">(</span><span class="n">period</span><span class="o">=</span><span class="s2">&quot;90d&quot;</span><span class="p">,</span> <span class="n">interval</span><span class="o">=</span><span class="s2">&quot;week&quot;</span><span class="p">)</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="c1"># Specify period (calendar time, not row count)</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="n">df</span> <span class="o">=</span> <span class="n">ticker</span><span class="o">.</span><span class="n">history</span><span class="p">(</span><span class="n">period</span><span class="o">=</span><span class="s2">&quot;7d&quot;</span><span class="p">)</span>    <span class="c1"># Last 7 days</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="n">df</span> <span class="o">=</span> <span class="n">ticker</span><span class="o">.</span><span class="n">history</span><span class="p">(</span><span class="n">period</span><span class="o">=</span><span class="s2">&quot;30d&quot;</span><span class="p">)</span>   <span class="c1"># Last 30 days</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="n">df</span> <span class="o">=</span> <span class="n">ticker</span><span class="o">.</span><span class="n">history</span><span class="p">(</span><span class="n">period</span><span class="o">=</span><span class="s2">&quot;6mo&quot;</span><span class="p">)</span>   <span class="c1"># Last 6 months</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="n">df</span> <span class="o">=</span> <span class="n">ticker</span><span class="o">.</span><span class="n">history</span><span class="p">(</span><span class="n">period</span><span class="o">=</span><span class="s2">&quot;1y&quot;</span><span class="p">)</span>    <span class="c1"># Last year</span>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="c1"># Specify interval</span>
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="n">df</span> <span class="o">=</span> <span class="n">ticker</span><span class="o">.</span><span class="n">history</span><span class="p">(</span><span class="n">interval</span><span class="o">=</span><span class="s2">&quot;day&quot;</span><span class="p">)</span>   <span class="c1"># Daily (default)</span>
+</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="n">df</span> <span class="o">=</span> <span class="n">ticker</span><span class="o">.</span><span class="n">history</span><span class="p">(</span><span class="n">interval</span><span class="o">=</span><span class="s2">&quot;week&quot;</span><span class="p">)</span>  <span class="c1"># Weekly</span>
+</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="n">df</span> <span class="o">=</span> <span class="n">ticker</span><span class="o">.</span><span class="n">history</span><span class="p">(</span><span class="n">interval</span><span class="o">=</span><span class="s2">&quot;month&quot;</span><span class="p">)</span> <span class="c1"># Monthly</span>
+</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a><span class="n">df</span> <span class="o">=</span> <span class="n">ticker</span><span class="o">.</span><span class="n">history</span><span class="p">(</span><span class="n">interval</span><span class="o">=</span><span class="s2">&quot;year&quot;</span><span class="p">)</span>  <span class="c1"># Yearly</span>
+</span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a>
+</span><span id="__span-3-16"><a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a><span class="c1"># Explicit date range (overrides period)</span>
+</span><span id="__span-3-17"><a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a><span class="n">df</span> <span class="o">=</span> <span class="n">ticker</span><span class="o">.</span><span class="n">history</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="s2">&quot;2024-01-01&quot;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;2024-12-31&quot;</span><span class="p">)</span>
+</span><span id="__span-3-18"><a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a>
+</span><span id="__span-3-19"><a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a><span class="c1"># Combine options</span>
+</span><span id="__span-3-20"><a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a><span class="n">df</span> <span class="o">=</span> <span class="n">ticker</span><span class="o">.</span><span class="n">history</span><span class="p">(</span><span class="n">period</span><span class="o">=</span><span class="s2">&quot;90d&quot;</span><span class="p">,</span> <span class="n">interval</span><span class="o">=</span><span class="s2">&quot;week&quot;</span><span class="p">)</span>
 </span></code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">period is calendar time, not row count</p>
+<p><code>period="30d"</code> means "the last 30 calendar days," not "30 rows." Weekends,
+holidays, and non-trading days reduce the row count accordingly.</p>
+</div>
 <h3 id="dataframe-columns">DataFrame Columns</h3>
+<p>The DataFrame is indexed by an ascending <code>date</code> <code>DatetimeIndex</code>:</p>
 <table>
 <thead>
 <tr>
@@ -1160,11 +1170,6 @@
 </tr>
 </thead>
 <tbody>
-<tr>
-<td>date</td>
-<td>datetime64</td>
-<td>Trading date</td>
-</tr>
 <tr>
 <td>open</td>
 <td>float</td>
@@ -1186,26 +1191,36 @@
 <td>Closing price</td>
 </tr>
 <tr>
+<td>change</td>
+<td>float</td>
+<td>Price change from previous close</td>
+</tr>
+<tr>
+<td>percent_change</td>
+<td>float</td>
+<td>Price change (%) from previous close</td>
+</tr>
+<tr>
 <td>volume</td>
 <td>int</td>
 <td>Trading volume</td>
 </tr>
-<tr>
-<td>change</td>
-<td>float</td>
-<td>Price change</td>
-</tr>
 </tbody>
 </table>
+<p>Since the index is a <code>DatetimeIndex</code>, you can slice by date directly:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;2024-06&quot;</span><span class="p">]</span>              <span class="c1"># every row in June 2024</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s2">&quot;2024-01-01&quot;</span><span class="p">:</span><span class="s2">&quot;2024-03-31&quot;</span><span class="p">]</span>  <span class="c1"># a date range</span>
+</span></code></pre></div>
 <h2 id="news">News</h2>
 <p>Get company news:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1"># All news types</span>
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="n">news</span> <span class="o">=</span> <span class="n">ticker</span><span class="o">.</span><span class="n">news</span><span class="p">()</span>
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>
-</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="c1"># Filter by type</span>
-</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="n">news</span> <span class="o">=</span> <span class="n">ticker</span><span class="o">.</span><span class="n">news</span><span class="p">(</span><span class="n">news_type</span><span class="o">=</span><span class="s2">&quot;earnings&quot;</span><span class="p">)</span>  <span class="c1"># Earnings announcements</span>
-</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="n">news</span> <span class="o">=</span> <span class="n">ticker</span><span class="o">.</span><span class="n">news</span><span class="p">(</span><span class="n">news_type</span><span class="o">=</span><span class="s2">&quot;general&quot;</span><span class="p">)</span>   <span class="c1"># General news</span>
-</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="n">news</span> <span class="o">=</span> <span class="n">ticker</span><span class="o">.</span><span class="n">news</span><span class="p">(</span><span class="n">news_type</span><span class="o">=</span><span class="s2">&quot;disclosure&quot;</span><span class="p">)</span> <span class="c1"># Disclosures</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1"># Earnings announcements (default)</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="n">news</span> <span class="o">=</span> <span class="n">ticker</span><span class="o">.</span><span class="n">news</span><span class="p">()</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="c1"># Filter by mode</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="n">news</span> <span class="o">=</span> <span class="n">ticker</span><span class="o">.</span><span class="n">news</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;all&quot;</span><span class="p">)</span>         <span class="c1"># All news</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="n">news</span> <span class="o">=</span> <span class="n">ticker</span><span class="o">.</span><span class="n">news</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;material&quot;</span><span class="p">)</span>    <span class="c1"># Material news (適時開示)</span>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="n">news</span> <span class="o">=</span> <span class="n">ticker</span><span class="o">.</span><span class="n">news</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;earnings&quot;</span><span class="p">)</span>    <span class="c1"># Earnings announcements</span>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="n">news</span> <span class="o">=</span> <span class="n">ticker</span><span class="o">.</span><span class="n">news</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;disclosure&quot;</span><span class="p">)</span>  <span class="c1"># Disclosures</span>
 </span></code></pre></div>
 <h3 id="news-dataframe-columns">News DataFrame Columns</h3>
 <table>
@@ -1217,72 +1232,118 @@
 </thead>
 <tbody>
 <tr>
-<td>date</td>
-<td>Publication date</td>
+<td>datetime</td>
+<td>Publication date and time</td>
 </tr>
 <tr>
-<td>time</td>
-<td>Publication time</td>
+<td>news_type</td>
+<td>News category label</td>
 </tr>
 <tr>
 <td>title</td>
 <td>News headline</td>
 </tr>
+</tbody>
+</table>
+<p>An empty DataFrame is returned when the stock has no news for the requested mode.</p>
+<h2 id="financials">Financials</h2>
+<p>Get financial statements from the finance page:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">statements</span> <span class="o">=</span> <span class="n">ticker</span><span class="o">.</span><span class="n">financials</span><span class="p">()</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="n">statements</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>          <span class="c1"># dict_keys([&quot;annual&quot;, &quot;interim&quot;, ...])</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="n">statements</span><span class="p">[</span><span class="s2">&quot;annual&quot;</span><span class="p">]</span>       <span class="c1"># full-year results + current forecast</span>
+</span></code></pre></div>
+<p><code>financials()</code> returns a <code>dict[str, pd.DataFrame]</code>. Keys are present only when
+kabutan publishes that statement for the stock:</p>
+<table>
+<thead>
 <tr>
-<td>url</td>
-<td>Link to full article</td>
+<th>Key</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>annual</code></td>
+<td>Full-year results + current forecast</td>
+</tr>
+<tr>
+<td><code>interim</code></td>
+<td>Half-year results + forecast</td>
+</tr>
+<tr>
+<td><code>quarterly</code></td>
+<td>Recent quarterly results</td>
+</tr>
+<tr>
+<td><code>cashflow</code></td>
+<td>Operating / investing / financing / free cash flow</td>
+</tr>
+<tr>
+<td><code>profitability</code></td>
+<td>ROE / ROA / margin history</td>
+</tr>
+<tr>
+<td><code>financial_position</code></td>
+<td>Equity ratio, total assets, retained earnings</td>
+</tr>
+<tr>
+<td><code>records</code></td>
+<td>All-time-high results</td>
 </tr>
 </tbody>
 </table>
-<h2 id="financials">Financials</h2>
-<p>Get financial statements:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">df</span> <span class="o">=</span> <span class="n">ticker</span><span class="o">.</span><span class="n">financials</span><span class="p">()</span>
-</span></code></pre></div>
-<p>Returns quarterly/annual financial data including revenue, profit, and other metrics.</p>
+<div class="admonition note">
+<p class="admonition-title">Units</p>
+<p>Money values are in <strong>百万円 (millions of yen)</strong>, as published by kabutan.
+Some historical profit data is gated behind 株探プレミアム and is excluded.</p>
+</div>
 <h2 id="shareholders">Shareholders</h2>
 <p>Get shareholder information:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1"># Major shareholders (default)</span>
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="n">df</span> <span class="o">=</span> <span class="n">ticker</span><span class="o">.</span><span class="n">holders</span><span class="p">()</span>
-</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>
-</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="c1"># Specify holder type</span>
-</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="n">df</span> <span class="o">=</span> <span class="n">ticker</span><span class="o">.</span><span class="n">holders</span><span class="p">(</span><span class="n">holder_type</span><span class="o">=</span><span class="s2">&quot;major&quot;</span><span class="p">)</span>      <span class="c1"># Major shareholders</span>
-</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="n">df</span> <span class="o">=</span> <span class="n">ticker</span><span class="o">.</span><span class="n">holders</span><span class="p">(</span><span class="n">holder_type</span><span class="o">=</span><span class="s2">&quot;float&quot;</span><span class="p">)</span>      <span class="c1"># Float shareholders</span>
-</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="n">df</span> <span class="o">=</span> <span class="n">ticker</span><span class="o">.</span><span class="n">holders</span><span class="p">(</span><span class="n">holder_type</span><span class="o">=</span><span class="s2">&quot;treasury&quot;</span><span class="p">)</span>   <span class="c1"># Treasury stock info</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1"># Latest reporting period (default)</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="n">df</span> <span class="o">=</span> <span class="n">ticker</span><span class="o">.</span><span class="n">holders</span><span class="p">()</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="c1"># Previous reporting period</span>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="n">df</span> <span class="o">=</span> <span class="n">ticker</span><span class="o">.</span><span class="n">holders</span><span class="p">(</span><span class="n">period</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 </span></code></pre></div>
+<p><code>period</code> selects the reporting period: <code>0</code> is the latest, <code>1</code> is the previous
+one, and so on. The DataFrame columns are <code>name</code>, <code>change</code>, <code>ratio_percent</code>,
+<code>shares</code> (plus a leading <code>date</code> column with the reporting-period label, when
+available).</p>
 <h2 id="similar-stocks">Similar Stocks</h2>
 <p>Find stocks similar to this one:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="n">similar</span> <span class="o">=</span> <span class="n">ticker</span><span class="o">.</span><span class="n">similar_stocks</span><span class="p">()</span>
-</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>
-</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">similar</span><span class="p">:</span>
-</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">t</span><span class="o">.</span><span class="n">code</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">t</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="n">similar</span> <span class="o">=</span> <span class="n">ticker</span><span class="o">.</span><span class="n">similar_stocks</span><span class="p">()</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">similar</span><span class="p">:</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">t</span><span class="o">.</span><span class="n">code</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">t</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </span></code></pre></div>
 <h2 id="caching">Caching</h2>
 <p>Profile data is cached after the first access:</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="n">ticker</span> <span class="o">=</span> <span class="n">pk</span><span class="o">.</span><span class="n">Ticker</span><span class="p">(</span><span class="s2">&quot;7203&quot;</span><span class="p">)</span>
-</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>
-</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="c1"># First access: makes HTTP request</span>
-</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="n">profile1</span> <span class="o">=</span> <span class="n">ticker</span><span class="o">.</span><span class="n">profile</span>
-</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>
-</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="c1"># Second access: uses cache (no HTTP request)</span>
-</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="n">profile2</span> <span class="o">=</span> <span class="n">ticker</span><span class="o">.</span><span class="n">profile</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="n">ticker</span> <span class="o">=</span> <span class="n">pk</span><span class="o">.</span><span class="n">Ticker</span><span class="p">(</span><span class="s2">&quot;7203&quot;</span><span class="p">)</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="c1"># First access: makes HTTP request</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="n">profile1</span> <span class="o">=</span> <span class="n">ticker</span><span class="o">.</span><span class="n">profile</span>
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="c1"># Second access: uses cache (no HTTP request)</span>
+</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="n">profile2</span> <span class="o">=</span> <span class="n">ticker</span><span class="o">.</span><span class="n">profile</span>
 </span></code></pre></div>
 <h3 id="clearing-cache">Clearing Cache</h3>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c1"># Clear cache and force refresh</span>
-</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="n">ticker</span><span class="o">.</span><span class="n">refresh</span><span class="p">()</span>
-</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>
-</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="c1"># Next access will make a new HTTP request</span>
-</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="n">profile</span> <span class="o">=</span> <span class="n">ticker</span><span class="o">.</span><span class="n">profile</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="c1"># Clear cache and force refresh</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="n">ticker</span><span class="o">.</span><span class="n">refresh</span><span class="p">()</span>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="c1"># Next access will make a new HTTP request</span>
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="n">profile</span> <span class="o">=</span> <span class="n">ticker</span><span class="o">.</span><span class="n">profile</span>
 </span></code></pre></div>
 <h2 id="error-handling">Error Handling</h2>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pykabutan</span><span class="w"> </span><span class="kn">import</span> <span class="n">TickerNotFoundError</span><span class="p">,</span> <span class="n">ScrapingError</span>
-</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>
-</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="k">try</span><span class="p">:</span>
-</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>    <span class="n">ticker</span> <span class="o">=</span> <span class="n">pk</span><span class="o">.</span><span class="n">Ticker</span><span class="p">(</span><span class="s2">&quot;9999999&quot;</span><span class="p">)</span>
-</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>    <span class="n">profile</span> <span class="o">=</span> <span class="n">ticker</span><span class="o">.</span><span class="n">profile</span>
-</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="k">except</span> <span class="n">TickerNotFoundError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Stock code not found: </span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">code</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="k">except</span> <span class="n">ScrapingError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-</span><span id="__span-10-9"><a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Failed to scrape: </span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">url</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pykabutan</span><span class="w"> </span><span class="kn">import</span> <span class="n">TickerNotFoundError</span><span class="p">,</span> <span class="n">ScrapingError</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="k">try</span><span class="p">:</span>
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>    <span class="n">ticker</span> <span class="o">=</span> <span class="n">pk</span><span class="o">.</span><span class="n">Ticker</span><span class="p">(</span><span class="s2">&quot;9999999&quot;</span><span class="p">)</span>
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>    <span class="n">profile</span> <span class="o">=</span> <span class="n">ticker</span><span class="o">.</span><span class="n">profile</span>
+</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="k">except</span> <span class="n">TickerNotFoundError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+</span><span id="__span-11-7"><a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Stock code not found: </span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">code</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span id="__span-11-8"><a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a><span class="k">except</span> <span class="n">ScrapingError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+</span><span id="__span-11-9"><a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Failed to parse </span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">what</span><span class="si">}</span><span class="s2"> — kabutan.jp may have changed its layout&quot;</span><span class="p">)</span>
 </span></code></pre></div>
 
 
