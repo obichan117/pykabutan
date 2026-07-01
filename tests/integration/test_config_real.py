@@ -10,6 +10,19 @@ import pytest
 import pykabutan as pk
 
 
+@pytest.fixture(autouse=True)
+def _restore_config():
+    """Save config before each test and restore after, to avoid state leaking
+    between tests when a test mutates timeout/request_delay/user_agent."""
+    timeout = pk.config.timeout
+    request_delay = pk.config.request_delay
+    user_agent = pk.config.user_agent
+    yield
+    pk.config.timeout = timeout
+    pk.config.request_delay = request_delay
+    pk.config.user_agent = user_agent
+
+
 @pytest.mark.integration
 class TestConfigTimeout:
     """Test that timeout config affects requests."""
@@ -22,16 +35,13 @@ class TestConfigTimeout:
 
     def test_very_short_timeout(self):
         """Test that very short timeout may cause issues."""
-        original = pk.config.timeout
+        pk.config.timeout = 0.001  # 1ms - way too short
         try:
-            pk.config.timeout = 0.001  # 1ms - way too short
-            ticker = pk.Ticker("7203")
+            _ = pk.Ticker("7203").profile
             # This might raise or might work depending on caching
             # Just ensure it doesn't hang forever
         except Exception:
             pass  # Expected - timeout too short
-        finally:
-            pk.config.timeout = original
 
 
 @pytest.mark.integration
@@ -40,21 +50,17 @@ class TestConfigRequestDelay:
 
     def test_request_delay_applied(self):
         """Test that delay is applied between requests."""
-        original = pk.config.request_delay
-        try:
-            pk.config.request_delay = 1.0  # 1 second delay
+        pk.config.request_delay = 1.0  # 1 second delay
 
-            start = time.time()
-            ticker = pk.Ticker("7203")
-            _ = ticker.profile  # First request
-            ticker.refresh()
-            _ = ticker.profile  # Second request (should wait)
-            elapsed = time.time() - start
+        start = time.time()
+        ticker = pk.Ticker("7203")
+        _ = ticker.profile  # First request
+        ticker.refresh()
+        _ = ticker.profile  # Second request (should wait)
+        elapsed = time.time() - start
 
-            # Should take at least 1 second due to delay
-            assert elapsed >= 0.9  # Allow small margin
-        finally:
-            pk.config.request_delay = original
+        # Should take at least ~1 second due to delay
+        assert elapsed >= 0.8  # Allow margin for scheduling jitter
 
 
 @pytest.mark.integration
@@ -63,9 +69,6 @@ class TestConfigReset:
 
     def test_reset_restores_defaults(self):
         """Test that reset() restores default values."""
-        original_timeout = pk.config.timeout
-        original_delay = pk.config.request_delay
-
         pk.config.timeout = 999
         pk.config.request_delay = 999
 

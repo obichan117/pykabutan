@@ -35,11 +35,11 @@ print(profile.description)  # Company description
 print(profile.themes)       # ['EV', '自動運転', ...]
 
 # Financial metrics
-print(profile.per)            # Price-to-earnings ratio
+print(profile.per)            # Price-to-earnings ratio (None if loss-making)
 print(profile.pbr)            # Price-to-book ratio
-print(profile.market_cap)     # Market capitalization
-print(profile.dividend_yield) # Dividend yield
-print(profile.margin_ratio)   # Profit margin
+print(profile.market_cap)     # Market capitalization, in yen
+print(profile.dividend_yield) # Dividend yield (%)
+print(profile.margin_ratio)   # Margin trading ratio
 
 # Additional info
 print(profile.website)      # Company website
@@ -61,84 +61,122 @@ data = ticker.profile.to_dict()
 Get historical OHLCV data:
 
 ```python
-# Default: 30 days of daily data
+# Default: last 30 calendar days of daily data
 df = ticker.history()
 
-# Specify period
-df = ticker.history(period="7d")   # Last 7 days
-df = ticker.history(period="30d")  # Last 30 days
-df = ticker.history(period="90d")  # Last 90 days
+# Specify period (calendar time, not row count)
+df = ticker.history(period="7d")    # Last 7 days
+df = ticker.history(period="30d")   # Last 30 days
+df = ticker.history(period="6mo")   # Last 6 months
+df = ticker.history(period="1y")    # Last year
 
 # Specify interval
 df = ticker.history(interval="day")   # Daily (default)
 df = ticker.history(interval="week")  # Weekly
 df = ticker.history(interval="month") # Monthly
+df = ticker.history(interval="year")  # Yearly
 
-# Specify number of rows
-df = ticker.history(rows=100)
+# Explicit date range (overrides period)
+df = ticker.history(start="2024-01-01", end="2024-12-31")
 
 # Combine options
 df = ticker.history(period="90d", interval="week")
 ```
 
+!!! note "period is calendar time, not row count"
+    `period="30d"` means "the last 30 calendar days," not "30 rows." Weekends,
+    holidays, and non-trading days reduce the row count accordingly.
+
 ### DataFrame Columns
+
+The DataFrame is indexed by an ascending `date` `DatetimeIndex`:
 
 | Column | Type | Description |
 |--------|------|-------------|
-| date | datetime64 | Trading date |
 | open | float | Opening price |
 | high | float | High price |
 | low | float | Low price |
 | close | float | Closing price |
+| change | float | Price change from previous close |
+| percent_change | float | Price change (%) from previous close |
 | volume | int | Trading volume |
-| change | float | Price change |
+
+Since the index is a `DatetimeIndex`, you can slice by date directly:
+
+```python
+df.loc["2024-06"]              # every row in June 2024
+df.loc["2024-01-01":"2024-03-31"]  # a date range
+```
 
 ## News
 
 Get company news:
 
 ```python
-# All news types
+# Earnings announcements (default)
 news = ticker.news()
 
-# Filter by type
-news = ticker.news(news_type="earnings")  # Earnings announcements
-news = ticker.news(news_type="general")   # General news
-news = ticker.news(news_type="disclosure") # Disclosures
+# Filter by mode
+news = ticker.news(mode="all")         # All news
+news = ticker.news(mode="material")    # Material news (適時開示)
+news = ticker.news(mode="earnings")    # Earnings announcements
+news = ticker.news(mode="disclosure")  # Disclosures
 ```
 
 ### News DataFrame Columns
 
 | Column | Description |
 |--------|-------------|
-| date | Publication date |
-| time | Publication time |
+| datetime | Publication date and time |
+| news_type | News category label |
 | title | News headline |
-| url | Link to full article |
+
+An empty DataFrame is returned when the stock has no news for the requested mode.
 
 ## Financials
 
-Get financial statements:
+Get financial statements from the finance page:
 
 ```python
-df = ticker.financials()
+statements = ticker.financials()
+
+statements.keys()          # dict_keys(["annual", "interim", ...])
+statements["annual"]       # full-year results + current forecast
 ```
 
-Returns quarterly/annual financial data including revenue, profit, and other metrics.
+`financials()` returns a `dict[str, pd.DataFrame]`. Keys are present only when
+kabutan publishes that statement for the stock:
+
+| Key | Description |
+|-----|-------------|
+| `annual` | Full-year results + current forecast |
+| `interim` | Half-year results + forecast |
+| `quarterly` | Recent quarterly results |
+| `cashflow` | Operating / investing / financing / free cash flow |
+| `profitability` | ROE / ROA / margin history |
+| `financial_position` | Equity ratio, total assets, retained earnings |
+| `records` | All-time-high results |
+
+!!! note "Units"
+    Money values are in **百万円 (millions of yen)**, as published by kabutan.
+    Some historical profit data is gated behind 株探プレミアム and is excluded.
 
 ## Shareholders
 
 Get shareholder information:
 
 ```python
-# Major shareholders (default)
+# Latest reporting period (default)
 df = ticker.holders()
 
-# Specify holder type
-df = ticker.holders(holder_type="major")      # Major shareholders
-df = ticker.holders(holder_type="float")      # Float shareholders
-df = ticker.holders(holder_type="treasury")   # Treasury stock info
+# Previous reporting period
+df = ticker.holders(period=1)
 ```
+
+`period` selects the reporting period: `0` is the latest, `1` is the previous
+one, and so on. The DataFrame columns are `name`, `change`, `ratio_percent`,
+`shares` (plus a leading `date` column with the reporting-period label, when
+available).
 
 ## Similar Stocks
 
@@ -186,5 +224,5 @@ try:
 except TickerNotFoundError as e:
     print(f"Stock code not found: {e.code}")
 except ScrapingError as e:
-    print(f"Failed to scrape: {e.url}")
+    print(f"Failed to parse {e.what} — kabutan.jp may have changed its layout")
 ```

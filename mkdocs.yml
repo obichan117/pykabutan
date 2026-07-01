@@ -28,6 +28,15 @@ theme:
     - search.highlight
     - search.suggest
 
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          options:
+            show_source: false
+            docstring_style: google
+
 markdown_extensions:
   - pymdownx.highlight:
       anchor_linenums: true

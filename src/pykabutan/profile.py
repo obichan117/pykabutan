@@ -19,9 +19,9 @@ class Profile:
         themes: List of theme tags
         website: Company website URL
         english_name: Company name in English
-        per: Price-to-Earnings Ratio
+        per: Price-to-Earnings Ratio (None when negative/undisclosed — kabutan shows "－")
         pbr: Price-to-Book Ratio
-        market_cap: Market capitalization in yen
+        market_cap: Market capitalization in yen (e.g. 39.764兆円 -> 39764000000000.0)
         dividend_yield: Dividend yield percentage
         margin_ratio: Margin trading ratio
     """

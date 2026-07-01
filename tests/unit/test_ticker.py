@@ -1,167 +1,190 @@
-"""Unit tests for Ticker class with mocked HTTP."""
+"""Unit tests for the Ticker facade, with pykabutan._internal.http.fetch mocked."""
 
+import pandas as pd
 import pytest
+import requests
 
 import pykabutan as pk
 from pykabutan.ticker import Ticker
 
+from ..conftest import load_fixture
 
-class TestTickerInit:
-    """Test Ticker initialization."""
 
-    def test_init_stores_code(self):
-        """Test that init stores the code."""
-        ticker = Ticker("7203")
-        assert ticker.code == "7203"
+class TestLazyLoading:
+    def test_construction_makes_no_http_request(self, mocker):
+        mock_fetch = mocker.patch("pykabutan._internal.http.fetch")
 
-    def test_init_converts_int_to_str(self):
-        """Test that int code is converted to string."""
-        ticker = Ticker(7203)
-        assert ticker.code == "7203"
-        assert isinstance(ticker.code, str)
+        Ticker("7203")
 
-    def test_init_no_http_request(self, mocker):
-        """Test that init doesn't make HTTP request (lazy loading)."""
-        mock_get = mocker.patch("pykabutan._scraper.requests.get")
-
-        ticker = Ticker("7203")
-
-        mock_get.assert_not_called()
+        mock_fetch.assert_not_called()
 
     def test_repr(self):
-        """Test string representation."""
-        ticker = Ticker("7203")
-        assert repr(ticker) == "Ticker('7203')"
+        assert repr(Ticker("7203")) == "Ticker('7203')"
 
 
-class TestTickerProfile:
-    """Test Ticker.profile with mocked HTTP."""
-
-    def test_profile_triggers_http(self, mocker, sample_main_page_html, mock_response):
-        """Test that accessing profile triggers HTTP request."""
-        mock_get = mocker.patch(
-            "pykabutan._scraper.requests.get",
-            return_value=mock_response(sample_main_page_html)
+class TestProfileCaching:
+    def test_profile_triggers_one_fetch(self, mocker):
+        mock_fetch = mocker.patch(
+            "pykabutan._internal.http.fetch",
+            return_value=load_fixture("main_7203.html"),
         )
-
         ticker = Ticker("7203")
+
         _ = ticker.profile
 
-        mock_get.assert_called_once()
+        mock_fetch.assert_called_once()
 
-    def test_profile_caching(self, mocker, sample_main_page_html, mock_response):
-        """Test that profile is cached."""
-        mock_get = mocker.patch(
-            "pykabutan._scraper.requests.get",
-            return_value=mock_response(sample_main_page_html)
+    def test_second_access_is_cached(self, mocker):
+        mock_fetch = mocker.patch(
+            "pykabutan._internal.http.fetch",
+            return_value=load_fixture("main_7203.html"),
         )
-
         ticker = Ticker("7203")
-        _ = ticker.profile
+
         _ = ticker.profile
         _ = ticker.profile
 
-        # Should only call once due to caching
-        mock_get.assert_called_once()
+        assert mock_fetch.call_count == 1
 
-    def test_profile_parses_name(self, mocker, sample_main_page_html, mock_response):
-        """Test that profile parses company name."""
-        mocker.patch(
-            "pykabutan._scraper.requests.get",
-            return_value=mock_response(sample_main_page_html)
+    def test_refresh_forces_refetch(self, mocker):
+        mock_fetch = mocker.patch(
+            "pykabutan._internal.http.fetch",
+            return_value=load_fixture("main_7203.html"),
         )
-
         ticker = Ticker("7203")
-        assert ticker.profile.name == "トヨタ自動車"
 
-    def test_profile_parses_market(self, mocker, sample_main_page_html, mock_response):
-        """Test that profile parses market."""
-        mocker.patch(
-            "pykabutan._scraper.requests.get",
-            return_value=mock_response(sample_main_page_html)
-        )
-
-        ticker = Ticker("7203")
-        assert ticker.profile.market == "東証Ｐ"
-
-    def test_profile_parses_industry(self, mocker, sample_main_page_html, mock_response):
-        """Test that profile parses industry."""
-        mocker.patch(
-            "pykabutan._scraper.requests.get",
-            return_value=mock_response(sample_main_page_html)
-        )
-
-        ticker = Ticker("7203")
-        assert ticker.profile.industry == "輸送用機器"
-
-
-class TestTickerRefresh:
-    """Test Ticker.refresh() method."""
-
-    def test_refresh_clears_cache(self, mocker, sample_main_page_html, mock_response):
-        """Test that refresh clears the cache."""
-        mock_get = mocker.patch(
-            "pykabutan._scraper.requests.get",
-            return_value=mock_response(sample_main_page_html)
-        )
-
-        ticker = Ticker("7203")
         _ = ticker.profile
         ticker.refresh()
         _ = ticker.profile
 
-        # Should call twice - once before refresh, once after
-        assert mock_get.call_count == 2
+        assert mock_fetch.call_count == 2
 
 
 class TestTickerNotFound:
-    """Test Ticker with invalid code."""
-
-    def test_404_raises_ticker_not_found(self, mocker, mock_response):
-        """Test that 404 response raises TickerNotFoundError."""
+    def test_http_404_raises_ticker_not_found(self, mocker):
+        response = mocker.Mock(status_code=404)
         mocker.patch(
-            "pykabutan._scraper.requests.get",
-            return_value=mock_response("Not Found", status_code=404)
+            "pykabutan._internal.http.fetch",
+            side_effect=requests.HTTPError(response=response),
         )
-
         ticker = Ticker("9999999")
 
         with pytest.raises(pk.TickerNotFoundError):
             _ = ticker.profile
 
-
-class TestTickerUrls:
-    """Test Ticker URL generation."""
-
-    def test_main_url(self):
-        """Test main page URL."""
+    def test_http_500_propagates(self, mocker):
+        response = mocker.Mock(status_code=500)
+        mocker.patch(
+            "pykabutan._internal.http.fetch",
+            side_effect=requests.HTTPError(response=response),
+        )
         ticker = Ticker("7203")
-        assert ticker._url_main == "https://kabutan.jp/stock/?code=7203"
 
-    def test_history_url(self):
-        """Test history page URL."""
-        ticker = Ticker("7203")
-        url = ticker._url_history("day", 1)
-        assert "code=7203" in url
-        assert "ashi=day" in url
-        assert "page=1" in url
+        with pytest.raises(requests.HTTPError):
+            _ = ticker.profile
 
-    def test_news_url(self):
-        """Test news page URL."""
-        ticker = Ticker("7203")
-        url = ticker._url_news(2)
-        assert "code=7203" in url
-        assert "nmode=2" in url
+    def test_not_found_page_content_raises_ticker_not_found(self, mocker):
+        mocker.patch(
+            "pykabutan._internal.http.fetch",
+            return_value=load_fixture("main_notfound_99999.html"),
+        )
+        ticker = Ticker("99999")
 
-    def test_finance_url(self):
-        """Test finance page URL."""
-        ticker = Ticker("7203")
-        assert "code=7203" in ticker._url_finance
-        assert "finance" in ticker._url_finance
+        with pytest.raises(pk.TickerNotFoundError):
+            _ = ticker.profile
 
-    def test_holder_url(self):
-        """Test holder page URL."""
+
+class TestHistory:
+    def test_pagination_stops_on_repeated_oldest_date(self, mocker):
+        mock_fetch = mocker.patch(
+            "pykabutan._internal.http.fetch",
+            side_effect=[
+                load_fixture("kabuka_7203_day_p1.html"),
+                load_fixture("kabuka_7203_day_p2.html"),
+                load_fixture("kabuka_7203_day_p1.html"),
+            ],
+        )
         ticker = Ticker("7203")
-        url = ticker._url_holder(0)
-        assert "code=7203" in url
-        assert "tab=0" in url
+
+        df = ticker.history(period="1y", interval="day")
+
+        # Must not loop forever: the third (repeated) page ends pagination.
+        assert mock_fetch.call_count == 3
+        assert isinstance(df.index, pd.DatetimeIndex)
+        assert df.index.name == "date"
+        assert df.index.is_monotonic_increasing
+        assert list(df.columns) == [
+            "open",
+            "high",
+            "low",
+            "close",
+            "change",
+            "percent_change",
+            "volume",
+        ]
+
+    def test_short_period_stops_after_one_page(self, mocker):
+        mock_fetch = mocker.patch(
+            "pykabutan._internal.http.fetch",
+            return_value=load_fixture("kabuka_7203_day_p1.html"),
+        )
+        ticker = Ticker("7203")
+
+        ticker.history(period="10d")
+
+        assert mock_fetch.call_count == 1
+
+    def test_unknown_interval_raises_value_error(self):
+        ticker = Ticker("7203")
+        with pytest.raises(ValueError):
+            ticker.history(interval="bogus")
+
+    def test_unknown_period_raises_value_error(self):
+        ticker = Ticker("7203")
+        with pytest.raises(ValueError):
+            ticker.history(period="bogus")
+
+
+class TestNews:
+    def test_unknown_mode_raises_value_error(self):
+        ticker = Ticker("7203")
+        with pytest.raises(ValueError):
+            ticker.news(mode="bogus")
+
+    def test_earnings_mode(self, mocker):
+        mocker.patch(
+            "pykabutan._internal.http.fetch",
+            return_value=load_fixture("news_7203_nmode2.html"),
+        )
+        ticker = Ticker("7203")
+
+        df = ticker.news(mode="earnings")
+
+        assert len(df) == 8
+
+
+class TestFinancials:
+    def test_returns_dict_with_annual_key(self, mocker):
+        mocker.patch(
+            "pykabutan._internal.http.fetch",
+            return_value=load_fixture("finance_7203.html"),
+        )
+        ticker = Ticker("7203")
+
+        result = ticker.financials()
+
+        assert "annual" in result
+
+
+class TestSimilarStocks:
+    def test_codes_include_alphanumeric(self, mocker):
+        mocker.patch(
+            "pykabutan._internal.http.fetch",
+            return_value=load_fixture("main_135A.html"),
+        )
+        ticker = Ticker("135A")
+
+        similar = ticker.similar_stocks()
+
+        codes = [t.code for t in similar]
+        assert "277A" in codes

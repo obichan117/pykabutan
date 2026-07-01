@@ -57,21 +57,27 @@ df = ticker.history(period="30d")
 # Last 90 days, weekly data
 df = ticker.history(period="90d", interval="week")
 
-# Specific number of rows
-df = ticker.history(rows=100)
+# Explicit date range
+df = ticker.history(start="2024-01-01", end="2024-12-31")
 ```
 
-The returned DataFrame contains:
+The returned DataFrame is indexed by an ascending `date` `DatetimeIndex` and contains:
 
 | Column | Description |
 |--------|-------------|
-| date | Trading date |
 | open | Opening price |
 | high | High price |
 | low | Low price |
 | close | Closing price |
-| volume | Trading volume |
 | change | Price change from previous day |
+| percent_change | Price change (%) from previous day |
+| volume | Trading volume |
+
+Because the index is a `DatetimeIndex`, you can slice by date directly:
+
+```python
+df.loc["2024-06"]  # every row in June 2024
+```
 
 ### Search for stocks
 

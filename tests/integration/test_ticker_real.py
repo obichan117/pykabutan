@@ -5,6 +5,7 @@ Run with: uv run pytest tests/integration/ -v
 Skip in CI with: uv run pytest -m "not integration"
 """
 
+import pandas as pd
 import pytest
 
 import pykabutan as pk
@@ -88,7 +89,8 @@ class TestTickerHistory:
         df = ticker.history()
 
         assert not df.empty
-        assert "date" in df.columns
+        assert isinstance(df.index, pd.DatetimeIndex)
+        assert df.index.name == "date"
         assert "open" in df.columns
         assert "high" in df.columns
         assert "low" in df.columns
@@ -100,7 +102,9 @@ class TestTickerHistory:
         ticker = pk.Ticker("7203")
         df = ticker.history(period="10d")
 
-        assert len(df) <= 10
+        # At most ~8 trading days fall within 10 calendar days.
+        assert len(df) <= 8
+        assert df.index.min() >= pd.Timestamp.today().normalize() - pd.Timedelta(days=11)
 
     def test_history_weekly(self):
         """Test weekly interval."""
@@ -108,7 +112,7 @@ class TestTickerHistory:
         df = ticker.history(period="30d", interval="week")
 
         assert not df.empty
-        assert "date" in df.columns
+        assert isinstance(df.index, pd.DatetimeIndex)
 
     def test_history_date_format(self):
         """Test that dates are properly parsed."""
@@ -116,8 +120,8 @@ class TestTickerHistory:
         df = ticker.history(period="5d")
 
         if not df.empty:
-            # Dates should be datetime objects
-            assert df["date"].dtype == "datetime64[ns]"
+            # Index should hold datetime values.
+            assert df.index.dtype == "datetime64[ns]"
 
 
 @pytest.mark.integration
@@ -139,6 +143,18 @@ class TestTickerNews:
         df = ticker.news(mode="all")
 
         assert isinstance(df, type(df))  # Is DataFrame
+
+
+@pytest.mark.integration
+class TestTickerFinancials:
+    """Test Ticker.financials() with real HTTP."""
+
+    def test_financials_has_core_statements(self):
+        """Test that the core statements are always present."""
+        ticker = pk.Ticker("7203")
+        result = ticker.financials()
+
+        assert {"annual", "cashflow"} <= set(result.keys())
 
 
 @pytest.mark.integration

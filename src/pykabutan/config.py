@@ -13,9 +13,14 @@ Usage:
 import json
 from pathlib import Path
 
+from pykabutan._internal.site import DEFAULT_USER_AGENT
+
 
 class Config:
     """Configuration for pykabutan.
+
+    Settings are process-global: changing them affects every Ticker and
+    search call in the current process.
 
     Attributes:
         timeout: Request timeout in seconds (default: 30)
@@ -25,11 +30,7 @@ class Config:
 
     _DEFAULT_TIMEOUT = 30
     _DEFAULT_REQUEST_DELAY = 0.5
-    _DEFAULT_USER_AGENT = (
-        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
-        "AppleWebKit/537.36 (KHTML, like Gecko) "
-        "Chrome/120.0.0.0 Safari/537.36"
-    )
+    _DEFAULT_USER_AGENT = DEFAULT_USER_AGENT
 
     def __init__(self):
         self._timeout = self._DEFAULT_TIMEOUT

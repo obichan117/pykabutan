@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>お探しのページが見つかりません。</title>
+<meta name="description" content="有望株(銘柄)の発掘・選択をサポートするサイト。株価 ニュース 決算 テーマや企業情報などが満載。株価変動要因となる情報や株式の売買タイミングに役立つ情報、迅速な投資判断ができる仕組みを提供。【日本初】となる 決算発表の分析記事をリアルタイムで配信する『決算速報』 市場全体を俯瞰する『市場マップ』など、ユニークな情報が満載！注目銘柄や話題銘柄のニュース、テーマなども掲載しています。" />
+<meta http-equiv="content-language" content="ja">
+<meta name="google" content="notranslate" />
+<meta name="google-site-verification" content="9TyMQp63vRE7zxgZJofMB6CJlyYQBwnVoHJoVFo1_rg" />
+<meta name="format-detection" content="telephone=no" />
+<meta property="og:url" content="https://kabutan.jp/stock/?code=99999" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="お探しのページが見つかりません。" />
+<meta property="og:description" content="有望株(銘柄)の発掘・選択をサポートするサイト。株価 ニュース 決算 テーマや企業情報などが満載。株価変動要因となる情報や株式の売買タイミングに役立つ情報、迅速な投資判断ができる仕組みを提供。【日本初】となる 決算発表の分析記事をリアルタイムで配信する『決算速報』 市場全体を俯瞰する『市場マップ』など、ユニークな情報が満載！注目銘柄や話題銘柄のニュース、テーマなども掲載しています。" />
+<meta property="og:image" content="https://kabutan.jp/images/cmn/SNS_kabutan_logo.png" />
+<meta name="twitter:card" content="summary_large_image" /><meta name='twitter:card' content='summary_large_image'>
+<link rel="shortcut icon" href="/favicon.ico?2" />
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto" type="text/css" media="all">
+<link rel="stylesheet" type="text/css" media="all" href="/css/base.css?v=260622" />
+<link rel="stylesheet" type="text/css" media="all" href="https://selection.kabutan.jp/wp-content/themes/kabutan_selection/dynamic_assets/custom.css" />
+<link rel="canonical" href="https://kabutan.jp/stock/?code=99999" />
+<link rel="alternate" media="only screen and (max-width: 640px)" href="https://s.kabutan.jp/stocks/99999/" />
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript">if (typeof jQuery == 'undefined') document.write(unescape("%3Cscript type='text/javascript' src='/js/lib/jquery-1.9.1.min.js' %3E%3C/script%3E"));</script>
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+<script type="text/javascript">if (typeof jQuery.ui == 'undefined') document.write(unescape("%3Cscript type='text/javascript' src='/js/lib/jquery-ui-1.10.3.min.js' %3E%3C/script%3E"));</script>
+<script type="text/javascript" src="/js/lib/dropdowncontent.js"></script>
+<script type="text/javascript" src="/js/base.js?v=2606232"></script>
+<script type="text/javascript" src="/js/rand_ads.js?v=1782903933"></script>
+<!-- 1) Prebid（Demand Manager） -->
+<script async src="https://micro.rubiconproject.com/prebid/dynamic/14032.js"></script>
+
+<!-- 2) GPT（最新/https固定/async） -->
+<script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"></script>
+
+<!-- 3) Bootstrap：cmd/que と定数・配列 -->
+<script>
+  window.googletag = window.googletag || { cmd: [] };
+  window.pbjs      = window.pbjs      || { que: [] };
+
+  const FAILSAFE_TIMEOUT = 3000;   // 2000～3000ms がおすすめ
+  let   adServerCalled   = false;
+
+  // 枠を溜める配列（HB/非HB）
+  const hbSlots   = [];
+  const nonhbSlots = [];
+</script>
+
+<!-- 4) KV外部JS（refresh 前設置 -->
+<script src="/js/kv-kabutan.js?v=20250930"></script>
+
+<!-- 5) 枠定義 / HB / failsafe -->
+<script>
+  // ===== Prebid（DM）ラッパ =====
+  function requestHeaderBids(slots) {
+    const dmRequest = new Promise(resolve => {
+      pbjs.que.push(() => {
+        pbjs.rp.requestBids({
+          gptSlotObjects: slots,
+          callback: () => {
+            // Prebid → GPT 連携（安全側でここでも一応セット）
+            googletag.cmd.push(() => { try{ pbjs.setTargetingForGPTAsync(); }catch(_){}; });
+            resolve();
+          }
+        });
+      });
+    });
+
+    // DM戻り or FAILSAFE の早い方で解決
+    return new Promise(resolve => {
+      Promise.race([
+        dmRequest,
+        new Promise(res => setTimeout(res, FAILSAFE_TIMEOUT))
+      ]).then(() => resolve(slots));
+    });
+  }
+
+  // ===== 枠定義 & GPT初期化 =====
+  googletag.cmd.push(function() {
+    // （ここで setTargeting は kv-kabutan.js に一任）
+    hbSlots.push(googletag.defineSlot('/94446337/1291_tan_pc_gatead_left', [[160,600],[120,600]], 'div-gpt-ad-1519008725722-0').addService(googletag.pubads()));
+    hbSlots.push(googletag.defineSlot('/94446337/1291_tan_pc_gatead_right', [[160,600],[120,600]], 'div-gpt-ad-1519008758041-0').addService(googletag.pubads()));
+    hbSlots.push(googletag.defineSlot('/94446337/8100_tan_pc_premiumbanner', [[970,250],[970,90],[728,90]], 'div-gpt-ad-1497932639366-0').addService(googletag.pubads()));
+    hbSlots.push(googletag.defineSlot('/94446337/1201_tan_pc_primerectangle', [[300,250],[300,600]], 'div-gpt-ad-1413891264102-1').addService(googletag.pubads()));
+    hbSlots.push(googletag.defineSlot('/94446337/5000_tan_pc_footeroverlay', [[728,50],[728,90]], 'div-gpt-ad-1748403571195-0').addService(googletag.pubads()));
+    hbSlots.push(googletag.defineSlot('/94446337/1561_tan_pc_longbanner', [[650,300],[640,360],[336,280],[300,250]], 'div-gpt-ad-1470729919773-0').addService(googletag.pubads()));
+    hbSlots.push(googletag.defineSlot('/94446337/1203_tan_pc_middlerectangle', [[300,250],[300,600]], 'div-gpt-ad-1413891264102-2').addService(googletag.pubads()));
+    nonhbSlots.push(googletag.defineSlot('/94446337/1803_tan_pc_infeedA_1st', [490,20], 'div-gpt-ad-1413891264102-30').addService(googletag.pubads()));
+    nonhbSlots.push(googletag.defineSlot('/94446337/1501_tan_pc_primeshowcase', [[468,60],[640,60]], 'div-gpt-ad-1413891264102-5').addService(googletag.pubads()));
+    hbSlots.push(googletag.defineSlot('/94446337/1561_tan_pc_longbanner_2', [650,300], 'div-gpt-ad-1563268967604-0').addService(googletag.pubads()));
+    nonhbSlots.push(googletag.defineSlot('/94446337/1502_tan_pc_contentsshowcase', [[640,60],[468,60]], 'div-gpt-ad-1413891264102-6').addService(googletag.pubads()));
+    hbSlots.push(googletag.defineSlot('/94446337/8001_tan_pc_bigbanner', [728,90], 'div-gpt-ad-1413891264102-10').addService(googletag.pubads()));
+    hbSlots.push(googletag.defineSlot('/94446337/1207_tan_pc_smallrectangle', [200,200], 'div-gpt-ad-1485251430638-0').addService(googletag.pubads()));
+    hbSlots.push(googletag.defineSlot('/94446337/2208_tan_pc_bottombigrectangle_left', [336,280], 'div-gpt-ad-1413891264102-9').addService(googletag.pubads()));
+    hbSlots.push(googletag.defineSlot('/94446337/2207_tan_pc_bottombigrectangle_right', [336,280], 'div-gpt-ad-1413891264102-8').addService(googletag.pubads()));
+    hbSlots.push(googletag.defineSlot('/94446337/1502_tan_pc_contentsshowcase_2', [114, 60], 'div-gpt-ad-1774519175073-0').addService(googletag.pubads()));
+    
+    hbSlots.push(googletag.defineSlot('/94446337/1403_tan_pc_Contentalliance_1', [113, 36], 'div-gpt-ad-1746689749770-0').addService(googletag.pubads()));
+    hbSlots.push(googletag.defineSlot('/94446337/1403_tan_pc_Contentalliance_2', [113, 36], 'div-gpt-ad-1746689847116-0').addService(googletag.pubads()));
+    hbSlots.push(googletag.defineSlot('/94446337/1403_tan_pc_Contentalliance_3', [113, 36], 'div-gpt-ad-1746689887815-0').addService(googletag.pubads()));
+    
+    //c-popup_ad
+    hbSlots.push(googletag.defineSlot('/94446337/1701_tan_pc_popupbanner', [234, 60], 'div-gpt-ad-1492587780175-0').addService(googletag.pubads()));
+    
+    //rand.js
+    hbSlots.push(googletag.defineSlot('/94446337/1401_tan_pc_topfront_banner', [190, 100], 'div-gpt-ad-1401').addService(googletag.pubads()));
+    hbSlots.push(googletag.defineSlot('/94446337/1402_tan_pc_top_text_1', [443, 19], 'div-gpt-ad-1402-1').addService(googletag.pubads()));
+    hbSlots.push(googletag.defineSlot('/94446337/1402_tan_pc_top_text_2', [443, 19], 'div-gpt-ad-1402-2').addService(googletag.pubads()));
+    
+    googletag.pubads().enableSingleRequest();
+    googletag.pubads().disableInitialLoad();   // ← 追加（HB完了まで初回ロード抑止）
+    googletag.enableServices();
+  });
+
+  // ===== 非HB を先に refresh（KVを直前に適用してから）=====
+  googletag.cmd.push(function(){
+    if (!nonhbSlots.length) return;
+    try { if (window.kvKabutanApply) window.kvKabutanApply(); } catch(_){}
+    googletag.pubads().refresh(nonhbSlots);
+  });
+
+  // ===== HB：入札 → KV適用 → refresh =====
+  googletag.cmd.push(function(){
+    if (!hbSlots.length) return;
+    requestHeaderBids(hbSlots).then(function(slots){
+      googletag.cmd.push(function(){
+        try { if (window.kvKabutanApply) window.kvKabutanApply(); } catch(_){}
+        try { pbjs.setTargetingForGPTAsync(); } catch(_){}
+        googletag.pubads().refresh(slots);
+      });
+    });
+  });
+</script>
+
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-PWTW5JXV');</script>
+<!-- End Google Tag Manager -->
+
+</head>
+<body>
+<script>
+window.dataLayer = window.dataLayer || [];
+dataLayer.push({
+  "user_id": "0"
+});
+</script>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PWTW5JXV"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<!--wrapper_main start-->
+<div id="wrapper_main">
+
+<!--ad1291 start-->
+<div class="ad" id="ad1291">
+<div id="top_impact" style="width:1338px; margin-left:-676px; margin-top:106px;">
+	<div id="top_impact_L" style="float:left;">
+		<div id='div-gpt-ad-1519008725722-0'>
+			<script>googletag.cmd.push(function() { googletag.display('div-gpt-ad-1519008725722-0'); });</script>
+		</div>
+	</div>
+	<div id="top_impact_R">
+		<div id='div-gpt-ad-1519008758041-0'>
+			<script>googletag.cmd.push(function() { googletag.display('div-gpt-ad-1519008758041-0'); });</script>
+		</div>
+	</div>
+</div>
+</div>
+<!--ad1291 end-->
+
+<style>
+input[type="checkbox"]:checked + label + .submenu {display: flex;}
+.submenu {display: none;}
+</style>
+<script type="module">
+import { Application } from "https://cdn.jsdelivr.net/npm/@hotwired/stimulus/dist/stimulus.js";
+
+const application = Application.start();
+
+// キャッシュ回避しつつ動的 import
+import(`/js/dropdown_controller.js?v=${Date.now()}`)
+  .then(module => {
+    const DropdownController = module.default;
+    application.register("dropdown", DropdownController);
+  })
+  .catch(err => {
+    console.error("DropdownController の読み込みに失敗:", err);
+  });
+</script>
+
+<!--header start-->
+<div id="header">
+<div id="logo"><a href="/" target="_top"><img src="/images/header/top_kabutan_logo.jpg?v=220310" alt="株探（かぶたん）" /></a>
+</div>
+
+<div class="header_menu_bar1"><!--header_menu_bar1-->
+
+<div class="text-2xs text-right flex justify-end items-center gap-4 mr-2 h-[25px]">
+	<div>
+		<a target="_top" class="block flex items-center text-slate-700 font-light gap-1 hover:opacity-70" href="https://us.kabutan.jp">
+			<img src="/images/header/header-flag-us__12_12" width="18" height="12">
+			<span class="inline-block">米国株へ</span>
+		</a>
+	</div>
+	
+	<div class="relative click-dropdown-menu" data-controller="dropdown">
+		<input type="checkbox" id="helpdesk-dropdown" class="hidden" data-dropdown-target="checkbox">
+				<label for="helpdesk-dropdown" class="flex items-center text-slate-700 font-light gap-1 cursor-pointer group" data-action="click->dropdown#toggle">
+			<div class="flex items-center gap-1 group-hover:opacity-70">
+				<img src="/images/header/help-regular__12_12.svg" width="12" height="12">
+				<span class="inline-block">ヘルプ</span>
+				<img src="/images/header/angle-down-solid__6_6.svg" width="6" height="6">
+			</div>
+		</label>
+		<div data-dropdown-target="menu" class="submenu absolute flex flex-col whitespace-nowrap bg-white text-left text-slate-700 top-4.5 w-52 border border-slate-300 rounded-sm shadow-sm">
+			<div class="h-8.5 content-center py-2 px-3 text-2xs text-slate-500 font-bold">株探ヘルプ</div>
+			<a class="items-center justify-between header-dropdown-list-item" href="https://support.kabutan.jp/hc/ja/categories/360001826733-%E6%A0%AA%E6%8E%A2%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6"><span>株探について</span><img width="6" height="12" src="/images/header/angle-down-solid__12_6.svg"></a>
+			<a class="items-center justify-between header-dropdown-list-item" href="https://support.kabutan.jp/hc/ja/categories/115001004328-%E6%96%B0%E8%A6%8F%E7%99%BB%E9%8C%B2-%E3%83%97%E3%83%A9%E3%83%B3%E3%81%AE%E5%86%8D%E9%96%8B"><span>新規登録・プランの再開</span><img width="6" height="12" src="/images/header/angle-down-solid__12_6.svg"></a>
+			<a class="items-center justify-between header-dropdown-list-item" href="https://support.kabutan.jp/hc/ja/categories/115001004288-%E6%A0%AA%E6%8E%A2%E3%83%97%E3%83%AC%E3%83%9F%E3%82%A2%E3%83%A0"><span>株探プレミアム</span><img width="6" height="12" src="/images/header/angle-down-solid__12_6.svg"></a>
+			<a class="items-center justify-between header-dropdown-list-item" href="https://support.kabutan.jp/hc/ja/categories/115001251987-%E3%83%AD%E3%82%B0%E3%82%A4%E3%83%B3-%E4%BC%9A%E5%93%A1%E6%83%85%E5%A0%B1"><span>ログイン・会員情報</span><img width="6" height="12" src="/images/header/angle-down-solid__12_6.svg"></a>
+			<a class="items-center justify-between header-dropdown-list-item" href="https://support.kabutan.jp/hc/ja/categories/115000999027-%E5%A5%91%E7%B4%84%E7%8A%B6%E6%B3%81-%E3%81%8A%E6%94%AF%E6%89%95%E3%81%84"><span>契約状況・お支払い</span><img width="6" height="12" src="/images/header/angle-down-solid__12_6.svg"></a>
+			<a class="items-center justify-between header-dropdown-list-item" href="https://support.kabutan.jp/hc/ja/categories/115001615707-%E3%81%8A%E5%95%8F%E3%81%84%E5%90%88%E3%82%8F%E3%81%9B%E3%81%AF%E3%81%93%E3%81%A1%E3%82%89%E3%81%8B%E3%82%89"><span>お問い合わせ</span><img width="6" height="12" src="/images/header/angle-down-solid__12_6.svg"></a>
+			<a href="https://support.kabutan.jp/hc/ja" class="block py-2 px-3 h-8.5 content-center text-2xs text-end hover:opacity-70">すべてのヘルプを見る</a>
+		</div>
+			</div>
+	
+	<div>
+		<a target="_top" class="text-slate-700 font-light flex items-center gap-1 hover:opacity-70" href="https://account.kabutan.jp/favorite_stocks">
+			<img src="/images/header/favorite__12_12.svg" width="12" height="12">
+			<span class="inline-block">お気に入り</span>
+		</a>
+	</div>
+	
+	<div>
+		<a target="_top" class="text-white font-bold leading-none" href="https://info.kabutan.jp/lp/?utm_source=kabutan&utm_medium=referral&utm_campaign=kabutan_pc&utm_content=hamburger">
+			<div class="flex items-center py-1 px-2 bg-linear-to-r from-mustard-yellow to-vivid-red rounded-sm gap-1 hover:opacity-70">
+				<span>株探プレミアムに登録</span>
+				<img src="/images/header/angles-right-solid__10_10.svg" width="10" height="10">
+			</div>
+		</a>
+	</div>
+	
+	<a target="_top" class="text-slate-700 font-light flex items-center gap-1 hover:opacity-70" href="https://account.kabutan.jp/login">
+		<img src="/images/header/user-login__12_12.svg" width="12" height="12">
+		<span class="inline-block">ログイン</span>
+	</a>
+	
+	
+</div>
+
+</div><!--header_menu_bar1-->
+
+
+<!--menu_1 start-->
+<div id="menu_1">
+<ul>
+<li class="navi_bg_home"><a href="/" >トップ</a></li>
+<li class="navi_bg_marcket"><a href="/news/marketnews/" class="small_font">市場ニュース</a></li>
+<li class="navi_bg_news"><a href="/news/" >決算速報</a></li>
+<li class="navi_bg_warning"><a href="/warning/" >株価注意報</a></li>
+<li class="navi_bg_disclosures"><a href="/disclosures/" class="small_font">会社開示情報</a></li>
+<li class="navi_bg_tansaku"><a href="/tansaku/" >銘柄探検</a></li>
+<li class="navi_bg_shareholder"><a href="/holder/" >日本の株主</a></li>
+<li class="navi_bg_distribution-map"><a href="/distribution-map/" >市場マップ</a></li>
+</ul>
+</div>
+<!--menu_1 end-->
+<div id="main_kensaku">
+<div class="main_kensaku_div1">
+<form method="get" action="/search/" name="kensaku" id="kensaku_form" autocomplete="off">
+<table>
+<tr>
+<td class="kensaku_title"><label for="input_id"><img src="/images/header/kensaku_logo.jpg" alt="株探検隊　検索" /></label></td>
+<td class="kensaku_input">
+<input type="search" id="input_id" name="q" autocomplete="off" inputmode="search" placeholder="銘柄コード、企業名、テーマから検索できます" data-1p-ignore data-lpignore="true" data-form-type="other" />
+</td>
+<td>
+<button type="button"><img src="/images/header/kensaku_bottom.jpg" id="kensaku_btn" alt="Go"></button>
+</td>
+<td>
+<button type="button"><img src="/images/header/kensaku_theme_bottom.jpg" id="theme_btn" alt="テーマ"></button>
+</td>
+<td>
+<button type="button"><img src="/images/header/kensaku_news_bottom.jpg?1" id="searchlink2" rel="sub_window2"></button>
+<div id="sub_window2" class="sub_window">「株探」で配信したニュース記事を検索します</div>
+</td>
+<td>
+<a href="/" id="searchlink1" rel="sub_window1"><img src="/images/header/kensaku_help_bottom.jpg?1" alt="" /></a>
+<div id="sub_window1" class="sub_window"><img src="/images/header/Help_text.gif?v=220406" alt="help説明文" /></div>
+</td>
+</tr>
+</table>
+</form>
+<div class="main_kensaku_div2_2 font-sans flex h-9">
+  <div class="text-[11px] font-bold text-white bg-ash-400 flex items-center pl-2 pr-[6px] rounded-l-full">PR</div>
+  <ul class="flex">
+    <li class="bg-white border border-ash-400 border-l-0 list-none pl-1 pr-1">
+      <!-- /94446337/1403_tan_pc_Contentalliance_1 -->
+      <div id='div-gpt-ad-1746689749770-0' style='min-width: 113px; min-height: 36px;'>
+        <!--
+        <span class="text-9px text-green-700"></span><a href="https://adclick.g.doubleclick.net/pcs/click?xai=AKAOjss2rUVtgbJWrFayDFl-FYRJ_twYXpvtihK4-bifrikXC3Glmr66N1qeTLsSoCF59FJe9456lutVNIEloet3KNw9LAIfqgcTmTTsTWz7qtZCccbMx_l0LZ-rku30NkZFykFHUxwjZHrgh3s0zbnb_M2jkXKzUZUx9HqRsqXRWVd5ENE2B-TolJlI78Icy-mCNl6Dmf2W5ouTNWxkT0cyL_Mt74WVkZHDL32kG1rfCTXjFY3k5OtXNO4y7xofM2XccYgvuSe6WUqneZ96TbPH9gpcoPDEsW77lnq9nwCHcxRicix1UhKWjpL6s72Xn4zQF9WWJt2u_tcEYbVVdNV8qkW5Uzbn-DEErNmLZQW6gK_MY-KLwesQH6BmdO_LNxCK0O-nKlbYPddkfW2V&amp;sai=AMfl-YRbALmvJ_eWlOuAnw6cwHaPdFGTPTiqpvsAS5ALbPuOyBs64F5z96ijDCroswYYd1mFlbhJ91HuKdXaMrMUqFKie_8Zwyrt6UmYU_y0mAqMS-bnyTNQR2cy8JWXzGHn4nV6cdJCkxHwN-MIdJwxrdEeWXmEQqmLIVEnzj0AclF28N25Ju8J8Fe8M5J6jbPzdtKTac_S7BGAzFT-qkYL2FVABAUzI91FIIq_NMPhlZk&amp;sig=Cg0ArKJSzPDK3njqwl1sEAE&amp;fbs_aeid=%5Bgw_fbsaeid%5D&amp;urlfix=1&amp;adurl=https://ac.ebis.ne.jp/tr_set.php?argument=GFU4CUZu&amp;ai=3253" class="inline-block font-sans leading-34px text-13px link-primary no-underline ml-1px" target="_blank" rel="noopener noreferrer">米国高配当5選</a>
+        -->
+        <script>
+          googletag.cmd.push(function() { googletag.display('div-gpt-ad-1746689749770-0'); });
+        </script>
+      </div>
+    </li>
+    <li class="bg-white border border-ash-400 border-l-0 list-none pl-1 pr-1">
+      <!-- /94446337/1403_tan_pc_Contentalliance_2 -->
+      <div id='div-gpt-ad-1746689847116-0' style='min-width: 113px; min-height: 36px;'>
+        <script>
+          googletag.cmd.push(function() { googletag.display('div-gpt-ad-1746689847116-0'); });
+        </script>
+      </div>
+    </li>
+    <li class="bg-white border border-ash-400 border-l-0 rounded-r-full list-none pl-1 pr-1.5">
+      <!-- /94446337/1403_tan_pc_Contentalliance_3 -->
+      <div id='div-gpt-ad-1746689887815-0' style='min-width: 113px; min-height: 36px;'>
+        <script>
+          googletag.cmd.push(function() { googletag.display('div-gpt-ad-1746689887815-0'); });
+        </script>
+      </div>
+    </li>
+  </ul>
+</div>
+</div><!--main_kensaku_div1-->
+<!-- /94446337/8100_tan_pc_premiumbanner -->
+<div style="clear:both;overflow:hidden;max-height:250px;min-height:90px;">
+<div id='div-gpt-ad-1497932639366-0'>
+<script>
+googletag.cmd.push(function() { googletag.display('div-gpt-ad-1497932639366-0'); });
+</script>
+</div>
+</div>
+<div class="main_kensaku_div4_2"></div>
+</div><!--#main_kensaku-->
+<script type="text/javascript">
+$(function(){
+	(function(){
+	dropdowncontent.init("searchlink1", "left-bottom", 300, "mouseover");
+	dropdowncontent.init("searchlink2", "left-bottom", 300, "mouseover");
+	
+	$('#input_id').keypress(function(e){
+		if (e.which == 13) {
+			btn_post('');
+			return false;
+		}
+	});
+	function btn_post(btn){
+		if ($('#input_id').val() == '') return false;
+		if (btn != ''){
+			$("<input>",{
+				type:"hidden",
+				name:"btn",
+				value:btn
+			}).appendTo("#kensaku_form");
+		}
+		$('#kensaku_form').submit();
+		return false;
+	}
+	$('#kensaku_btn').click(function(){btn_post('');});
+	$('#theme_btn').click(function(){btn_post('theme');});
+	$('#searchlink2').click(function(){btn_post('cse');});
+	})();
+	
+	(function(){
+	var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+	var d=$("#input_id");
+	if ($(window).scrollTop() == 0 && !isMobile) d.focus();
+	d.autocomplete({
+	delay:400,
+	minLength:2,
+	select:function(event, ui){
+		d.val(ui.item.label);
+		$("#kensaku_form").submit();
+	},
+	focus:function(event, ui ){
+		return false;
+	},
+	source:function(request, response){
+		$.ajax({
+			url:"/pulldown/",
+			type:"post",
+			data:{"q": request.term},
+			dataType:"json",
+			success: function( data ) {
+				response( data );
+			},
+			error: function() {
+				response( [] );
+			}
+		});
+	}
+	});
+	})();
+
+});
+</script>
+
+<noscript>
+<div class="w-full2 h-auto px-2 pb-2 gap-2.5 box-border">
+	<div class="w-full2 h-auto py-4 px-4 border border-solid error-input rounded-md gap-2 box-border">
+		<div class="w-full2 mb-2">
+			<div class="w-auto h-auto gap-2 flex">
+				<div class="w-auto h-auto py-0.5 mb-2.5 box-border">
+					<svg class="" width="20" height="18" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+						<path fill="#ef4444" d="M256 32c14.2 0 27.3 7.5 34.5 19.8l216 368c7.3 12.4 7.3 27.7 .2 40.1S486.3 480 472 480H40c-14.3 0-27.6-7.7-34.7-20.1s-7-27.8 .2-40.1l216-368C228.7 39.5 241.8 32 256 32zm0 128c-13.3 0-24 10.7-24 24V296c0 13.3 10.7 24 24 24s24-10.7 24-24V184c0-13.3-10.7-24-24-24zm32 224a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z"/>
+					</svg>
+				</div>
+				<div class="text-base align-middle text-slate-700 font-semibold">
+					JavaScriptが無効になっています。
+				</div>
+			</div>
+			<div class="w-full align-middle text-slate-700 text-sm mt-2.5">
+				株探のすべての機能を利用するためには、JavaScriptを有効にしてください。
+			</div>
+		</div>
+	</div>
+</div>
+</noscript>
+</div>
+<!-- header end -->
+
+<!-- container start -->
+<div id="container">
+<!-- main start -->
+<div id="main">
+
+<div class="e404">
+お探しのページが見つかりません。<br />
+お探しのページは、他の場所に移動または削除された可能性があります。
+</div>
+
+<div class="floatclear"></div>
+</div>
+<!-- main end -->
+
+<div class="floatclear"></div>
+</div>
+<!-- container end -->
+
+<!--footer start-->
+<div id="footer">
+<p>当サイト「株探（かぶたん）」で提供する情報は投資勧誘または投資に関する助言をすることを目的としておりません。投資の決定は、ご自身の判断でなされますようお願いいたします。 当サイトにおけるデータは、東京証券取引所、大阪取引所、名古屋証券取引所、JPX総研、ジャパンネクスト証券、堂島取引所、China Investment Information Services、CME Group Inc. 等からの情報の提供を受けております。日経平均株価の著作権は日本経済新聞社に帰属します。株探に掲載される株価チャートは、その銘柄の過去の株価推移を確認する用途で掲載しているものであり、その銘柄の将来の価値の動向を示唆あるいは保証するものではなく、また、売買を推奨するものではありません。決算を扱う記事における「サプライズ決算」とは、決算情報として注目に値するかという観点から、発表された決算のサプライズ度（当該会社の本決算か各四半期であるか、業績予想の修正か配当予想の修正であるか、及びそこで発表された決算結果ならびに当該会社が過去に公表した業績予想・配当予想との比較及び過去の決算との比較を数値化し判定）が高い銘柄であり、また「サプライズ順」はサプライズ度に基づいた順番で決算情報を掲載しているものであり、記事に掲載されている各銘柄の将来の価値の動向を示唆あるいは保証するものではなく、また、売買を推奨するものではありません。</p>
+<ul>
+<li class="footer_top"><a href="/info/thissite" target="_top">「株探」について</a></li>
+<li><a href="https://info.kabutan.jp/terms-all/" target="_blank">利用規約</a></li>
+<li><a href="https://minkabu.co.jp/privacy-policy/" target="_blank">プライバシーポリシー</a></li>
+<li>
+<!-- STRIGHT ONE Privacy Setting Banner Redisplay Link Tag Start -->
+<div data-id="cookie_consent_cookie_btn" style="display:inline;"></div>
+<!-- STRIGHT ONE Privacy Setting Banner Redisplay Link Tag End -->
+</li>
+<li><a href="https://info.kabutan.jp/specified-commercial-transaction-act/" target="_blank">特定商取引表示</a></li>
+<li><a href="https://hrmos.co/pages/minkabu" target="_blank">採用情報</a></li>
+<li><a href="https://info.kabutan.jp/company/" target="_blank">運営会社</a></li>
+<li><a href="/info/sitemap" target="_top">サイトマップ</a></li>
+<li><a href="https://support.kabutan.jp/hc/ja" target="_blank">ヘルプ</a></li>
+</ul>
+<div class="foot2">
+<ul>
+<li class="footer_top"><a href="/" target="_top">トップ</a></li>
+<li><a href="/news/marketnews/" target="_top">市場ニュース</a></li>
+<li><a href="/news/" target="_top">決算速報</a></li>
+<li><a href="/warning/" target="_top">株価注意報</a></li>
+<li><a href="/disclosures/" target="_top">会社開示情報</a></li>
+<li><a href="/tansaku/" target="_top">銘柄探検</a></li>
+<li><a href="/holder/" target="_top">日本の株主</a></li>
+<li><a href="/distribution-map/" target="_top">市場マップ</a></li>
+<li><a href="/hikaku/" target="_top">証券会社比較</a></li>
+</ul>
+</div>
+</div>
+<!--footer end-->
+</div>
+<!--wrapper_main end-->
+
+<footer>
+<div id="footer2">
+<div class="ly_container">
+<div class="copyright dptbl">
+<a href="https://minkabu.co.jp/" target="_top" class=" tal">
+<img src="/images/info/infonoid_logo_sub_white.svg">
+</a>
+<span class="dptblc tar vabt">(C)&nbsp;MINKABU&nbsp;THE&nbsp;INFONOID,&nbsp;Inc.</span>
+</div>
+</div>
+</div>
+</footer>
+
+<!-- /94446337/5000_tan_pc_footeroverlay -->
+<div id='div-gpt-ad-1748403571195-0' style='min-width: 728px; min-height: 50px;'>
+  <script>
+    googletag.cmd.push(function() { googletag.display('div-gpt-ad-1748403571195-0'); });
+  </script>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const adContainer = document.getElementById('div-gpt-ad-1748403571195-0');
+  function adjustBodyPadding() {
+    if (adContainer && window.getComputedStyle(adContainer).display !== 'none') {
+      const adHeight = adContainer.offsetHeight;
+      document.body.style.paddingBottom = adHeight + 'px';
+    } else {
+      document.body.style.paddingBottom = '0';
+    }
+  }
+  window.addEventListener('load', adjustBodyPadding);
+  window.addEventListener('resize', adjustBodyPadding);
+  if (adContainer) {
+    const observer = new MutationObserver(adjustBodyPadding);
+    observer.observe(adContainer, { attributes: true, childList: true, subtree: true });
+  }
+});
+</script>
+
+</body>
+</html>

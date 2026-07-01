@@ -72,14 +72,15 @@ Find stocks related to a specific theme or keyword:
 results = pk.search_by_theme("人工知能")
 
 # Search for EV-related stocks
-results = pk.search_by_theme("EV")
+results = pk.search_by_theme("EV関連")
 
 # Search for semiconductor stocks
 results = pk.search_by_theme("半導体")
 ```
 
-!!! warning "Use Japanese Terms"
-    Theme search works best with Japanese terms. While some English terms like "EV" work, Japanese terms like "人工知能" (AI) or "半導体" (semiconductor) yield better results.
+!!! warning "Theme must be Japanese"
+    `theme` must be a Japanese term. English terms like `"AI"` won't match
+    and return an empty list rather than raising an error.
 
 ### Filter by Market
 

@@ -1,286 +1,98 @@
 # pykabutan
 
-A clean, beginner-friendly Python library for scraping kabutan.jp (Japanese stock information site).
-
-## Project Goals
-
-- Simple, yfinance-style API
-- Works out of the box with sensible defaults
-- Designed for both Python API and REST API usage
-- Lazy loading for performance
-- No Selenium dependency (lightweight)
-
-## Source Reference
-
-Refactored from original pykabu codebase.
-See: `PYKABU_CODEBASE_ANALYSIS.md` for original codebase analysis.
-
----
-
-## Target API Design
-
-### Basic Usage
-
-```python
-import pykabutan as pk
-
-# Single ticker
-ticker = pk.Ticker("7203")
-
-# Profile (from main page - cached)
-ticker.profile.name           # "トヨタ自動車"
-ticker.profile.market         # "東証P"
-ticker.profile.industry       # "輸送用機器"
-ticker.profile.description    # Company description
-ticker.profile.themes         # ["EV", "自動運転", ...]
-ticker.profile.website        # Company URL
-ticker.profile.english_name   # "TOYOTA MOTOR CORPORATION"
-ticker.profile.per            # 10.5
-ticker.profile.pbr            # 1.2
-ticker.profile.market_cap     # 35000000000000
-ticker.profile.dividend_yield # 2.5
-ticker.profile.margin_ratio   # 3.2
-
-dict(ticker.profile)          # All fields as dict (for JSON serialization)
-
-# Price history (yfinance style)
-ticker.history(period="30d")                    # Daily, last 30 days
-ticker.history(period="1y", interval="week")   # Weekly, last year
-ticker.history(start="2024-01-01", end="2024-12-31")  # Date range
-
-# Other data (separate pages - not cached)
-ticker.news(mode="earnings")  # DataFrame: earnings announcements
-ticker.news(mode="all")       # DataFrame: all news
-ticker.financials()           # Dict of DataFrames
-ticker.holders()              # DataFrame: shareholder info
-ticker.similar_stocks()       # List[Ticker]: similar companies
-
-# Search functions
-tickers = pk.search_by_industry("電気機器")
-tickers = pk.search_by_theme("AI")
-
-# Search results have cached basic info from search page
-for t in tickers[:5]:
-    print(t.code, t.profile.name)  # HTTP request for each profile
-    print(t.profile.description)  # HTTP request (detailed info)
-```
-
-### Configuration (Optional)
-
-```python
-import pykabutan as pk
-
-# Module-level config
-pk.config.timeout = 60          # Request timeout (seconds)
-pk.config.request_delay = 1.0   # Delay between requests (seconds)
-pk.config.user_agent = "..."    # Custom user agent
-
-# Or via config file: ~/.pykabutan/config.json
-# {
-#   "timeout": 60,
-#   "request_delay": 1.0
-# }
-```
-
----
-
-## REST API Mapping
-
-| Python | REST Endpoint | Kabutan Page |
-|--------|---------------|--------------|
-| `pk.Ticker("7203")` | - | - |
-| `ticker.profile` | `GET /ticker/7203/profile` | `/stock/?code=7203` |
-| `ticker.history()` | `GET /ticker/7203/history?period=30d` | `/stock/kabuka?code=7203` |
-| `ticker.news()` | `GET /ticker/7203/news?mode=earnings` | `/stock/news?code=7203` |
-| `ticker.financials()` | `GET /ticker/7203/financials` | `/stock/finance?code=7203` |
-| `ticker.holders()` | `GET /ticker/7203/holders` | `/stock/holder?code=7203` |
-| `pk.search_by_industry()` | `GET /search/industry/{name}` | `/themes/?industry=` |
-| `pk.search_by_theme()` | `GET /search/theme/{name}` | `/themes/?theme=` |
-
----
-
-## Design Decisions
-
-### Scope
-- **Included**: All kabutan.jp scraping (profile, history, news, financials, holders, search)
-- **Excluded**: Screenshots (no Selenium), JpxDate, jpx_symbols, TradingHours
-
-### Architecture
-- **Lazy loading**: Data fetched only when accessed
-- **High-level API only**: Scraper internals hidden from users
-- **yfinance conventions**: `Ticker` class, `history()` method, familiar to Python traders
-
-### Data Structure
-- **Page-based objects**: `ticker.profile` = entire main page (natural caching boundary)
-- **Methods for dynamic data**: `history()`, `news()`, `financials()`, `holders()`
-
-### Caching
-- **In-memory, per session**: Profile cached, methods not cached
-- **Page-level caching**: One kabutan page = one cache entry
-- **No disk cache**: Keep it simple
-
-### Error Handling
-- **Missing data**: Return `None` (expected for ETFs, etc.)
-- **Invalid ticker code**: Raise `TickerNotFoundError`
-- **Network errors**: Raise `ConnectionError`
-- **Parsing errors**: Raise `ScrapingError`
-
-### Rate Limiting
-- **Built-in default**: ~0.5s delay between requests
-- **Configurable**: `pk.config.request_delay`
-
-### Configuration
-- **Sensible defaults**: Works out of the box
-- **Module-level config**: `pk.config.*`
-- **File-based config**: `~/.pykabutan/config.json` (optional)
-
----
-
-## Target File Structure
-
-```
-pykabutan/
-├── src/
-│   └── pykabutan/
-│       ├── __init__.py          # Public API: Ticker, search_by_*, config
-│       ├── ticker.py            # Ticker class
-│       ├── profile.py           # Profile dataclass
-│       ├── search.py            # search_by_industry, search_by_theme
-│       ├── config.py            # Configuration management
-│       ├── exceptions.py        # TickerNotFoundError, ScrapingError
-│       └── _scraper.py          # Internal: HTTP requests, parsing (hidden)
-├── tests/
-│   ├── test_ticker.py
-│   ├── test_search.py
-│   └── test_config.py
-├── pyproject.toml
-├── README.md
-└── .claude/
-    └── CLAUDE.md               # This file
-```
-
----
-
-## Dependencies
-
-```toml
-[tool.poetry.dependencies]
-python = ">=3.10,<4.0"
-requests = "^2.32"
-beautifulsoup4 = "^4.12"
-pandas = "^2.0"
-lxml = "^5.0"
-```
-
-**Note**: No Selenium. Lightweight library.
-
----
-
-## Kabutan URL Reference
-
-| Page | URL Pattern | Data |
-|------|-------------|------|
-| Main | `https://kabutan.jp/stock/?code={code}` | name, market, industry, description, themes, PER, PBR, etc. |
-| OHLC | `https://kabutan.jp/stock/kabuka?code={code}&ashi={interval}&page={page}` | Price history |
-| News | `https://kabutan.jp/stock/news?code={code}&nmode={mode}` | News (0=all, 1=material, 2=earnings, 3=disclosure) |
-| Finance | `https://kabutan.jp/stock/finance?code={code}` | Financial statements |
-| Holders | `https://kabutan.jp/stock/holder?code={code}&tab={tab}` | Shareholders |
-| Industry | `https://kabutan.jp/themes/?industry={code}&market={market}` | Stocks by industry |
-| Theme | `https://kabutan.jp/themes/?theme={encoded_theme}` | Stocks by theme |
-
-### Interval Mapping (history)
-
-| pykabutan | kabutan `ashi` |
-|-----------|----------------|
-| `"day"` / `"1d"` | `day` |
-| `"week"` / `"1w"` | `wek` |
-| `"month"` / `"1mo"` | `mon` |
-| `"year"` / `"1y"` | `yar` |
-
-### News Mode Mapping
-
-| pykabutan | kabutan `nmode` |
-|-----------|-----------------|
-| `"all"` | `0` |
-| `"material"` | `1` |
-| `"earnings"` | `2` |
-| `"disclosure"` | `3` |
-
----
-
-## Industry Code Reference
-
-```python
-INDUSTRY_MAP = {
-    "水産・農林業": 1,
-    "鉱業": 2,
-    "建設業": 3,
-    "食料品": 4,
-    "繊維製品": 5,
-    "パルプ・紙": 6,
-    "化学": 7,
-    "医薬品": 8,
-    "石油・石炭": 9,
-    "ゴム製品": 10,
-    "ガラス・土石": 11,
-    "鉄鋼": 12,
-    "非鉄金属": 13,
-    "金属製品": 14,
-    "機械": 15,
-    "電気機器": 16,
-    "輸送用機器": 17,
-    "精密機器": 18,
-    "その他製品": 19,
-    "電気・ガス": 20,
-    "陸運業": 21,
-    "海運業": 22,
-    "空運業": 23,
-    "倉庫・運輸": 24,
-    "情報・通信業": 25,
-    "卸売業": 26,
-    "小売業": 27,
-    "銀行業": 28,
-    "証券・商品": 29,
-    "保険業": 30,
-    "その他金融業": 31,
-    "不動産業": 32,
-    "サービス業": 33,
-}
-```
-
----
+A clean, beginner-friendly Python library for scraping kabutan.jp (Japanese stock information site). Published on PyPI (0.1.1); currently being refactored toward 0.2.0.
 
 ## Quick Start Commands
 
 ```bash
-# Setup
-uv sync
-
-# Run tests
-uv run pytest
-
-# Run single test
-uv run pytest tests/test_ticker.py -v
-
-# Format code
-uv run ruff format .
-
-# Lint
-uv run ruff check .
-
-# Serve docs
-uv run mkdocs serve
+uv sync                                  # Setup
+uv run pytest -m "not integration"       # Unit tests (fast, mocked)
+uv run pytest tests/integration          # Integration tests (hit live kabutan.jp)
+uv run ruff check . && uv run ruff format .
+uv run mkdocs serve                      # Docs preview
+uv run mkdocs build --strict             # Docs build check
 ```
 
----
+## Audit Summary (2026-07-02)
 
-## Implementation Notes
+Full audit performed after ~6 months without maintenance. Key results:
 
-1. **Start with `_scraper.py`**: Port the HTTP/parsing logic from original `kabutan.py`
-2. **Build `Profile` dataclass**: All main page fields with `__iter__` for dict conversion
-3. **Build `Ticker` class**: Lazy loading with cached `profile` property
-4. **Add methods**: `history()`, `news()`, `financials()`, `holders()`, `similar_stocks()`
-5. **Add search functions**: `search_by_industry()`, `search_by_theme()`
-6. **Add config**: Module-level + file-based
-7. **Add exceptions**: `TickerNotFoundError`, `ScrapingError`
-8. **Write tests**: Mock HTTP responses for reliable testing
+- **Live site verified unchanged**: every parsing assumption (table indices 5/3/2, `match="PBR"`/`"概要"`/`"株主名"`, all CSS selectors, date formats) still holds against kabutan.jp as of 2026-07-02. All 29 integration tests pass.
+- **Confirmed bugs**: `similar_stocks()` drops alphanumeric codes (e.g. `277A`) due to `isdigit()` check; 404 detection via `"404" in str(e)` string match; `__version__` out of sync with pyproject.
+- **`market_cap` is in 億円, not yen** — digit-concatenation of `39兆7,640億円` → `397640.0` happens to be correct in 億円. Docs claimed yen. 0.2.0 converts to yen.
+- **Loss-making companies**: kabutan shows PER as `－倍` → parsed as `None` (acceptable, documented).
+- **Finance page is partially paywalled** (株探プレミアム): historical profit columns unavailable; `financials()` parses only free tables and must match tables by column names, not index (25 tables, layout varies by company).
+- **Docs had drifted badly**: documented `news(news_type=)` / `holders(holder_type=)` params never existed (real: `mode`, `period`); phantom `SearchResult` type; mkdocstrings directives present but plugin never configured.
+- **Test suite was tautological**: fixtures written to match parsers; all risky logic (history pagination, period parsing, search parsing, stats cleaning) had zero unit coverage.
+
+## Architecture (0.2.0 — implemented 2026-07-02)
+
+```
+src/pykabutan/
+├── __init__.py        # Public API: Ticker, search_*, config, exceptions
+├── ticker.py          # Ticker facade (lazy loading, caching) — no parsing
+├── profile.py         # Profile dataclass
+├── search.py          # search_by_industry / search_by_theme / list_industries
+├── config.py          # User settings: timeout, request_delay, user_agent
+├── exceptions.py      # PykabutanError, TickerNotFoundError, ScrapingError
+└── _internal/
+    ├── http.py        # Fetch only: request_as_human, rate limiting, get_soup/get_dfs
+    ├── site.py        # ALL kabutan constants: URL patterns, table indices,
+    │                  #   CSS selectors, interval/nmode maps, INDUSTRY_MAP, MARKET_MAP
+    └── parsers/       # Parse only: soup/html → structured data (no I/O)
+        ├── main_page.py   # profile fields, similar-stock codes
+        ├── history.py     # OHLC table
+        ├── news.py
+        ├── finance.py     # named statements: results, forecasts, quarterly, cashflow
+        ├── holders.py
+        └── themes.py      # search-result rows
+```
+
+Rules encoded by this tree:
+- **Fetch vs parse separation**: `http.py` does I/O and returns raw content; `parsers/` are pure functions soup→data. Never mix.
+- **Single site-coupling point**: when kabutan.jp changes markup, `_internal/site.py` is the only file with constants to update.
+- **Public surface = top level**: users only ever touch `ticker/profile/search/config/exceptions`.
+
+## Design Decisions (updated in audit — these override older notes)
+
+- **Error handling**: structural parse failures (expected table/selector missing → site changed) **raise `ScrapingError`**. Genuinely optional fields (ETF has no PER, `－倍` for loss-makers) return `None`. Invalid ticker → `TickerNotFoundError` via HTTP status-code check (not string matching). This is a breaking change → 0.2.0.
+- **`financials()`**: returns dict of named DataFrames keyed `annual`, `interim`, `quarterly`, `cashflow`, `profitability`, `financial_position`, `records` — tables identified by column signature (ＲＯＥ → profitability, フリーCF → cashflow, etc.), paywalled tables excluded. Values in 百万円 as published.
+- **`history()`**: period is calendar time (date-bound pagination stop, not row counting); returns ascending `DatetimeIndex` with numeric columns (yfinance convention).
+- **HTTP**: single `_internal/http.py:fetch()` — pooled `requests.Session`, urllib3 `Retry` on 429/5xx, fixed UTF-8 encoding, thread-safe rate limiter (lock held while sleeping).
+- **`market_cap`**: converted to yen (×1e8 from parsed 億円 value) to match documented contract.
+- **Version**: single-sourced from `pyproject.toml` via `importlib.metadata` — never hardcode `__version__`.
+- **API docs**: mkdocstrings-python auto-generation from docstrings. No hand-copied API pages.
+- **Test fixtures**: captured real kabutan.jp HTML snapshots (stored under `tests/fixtures/`), not hand-fabricated minimal HTML.
+- **Caching**: in-memory per session; profile/main-page soup cached, method calls not cached. Unchanged.
+- **Rate limiting**: default 0.5s delay, configurable. Unchanged.
+- **No Selenium** — lightweight requests+bs4+pandas only. Unchanged.
+
+## Kept vs Discarded (audit outcome)
+
+Kept: entire public API surface, flat public modules, lazy-loading design, config system, integration-test approach.
+Discarded/replaced: `_scraper.py` (split into `_internal/http.py` + `site.py` + `parsers/`), silent `except Exception` swallowing, dead `ashi == "shin"` branch, vestigial `ticker._search_name`, duplicated config defaults in `_scraper.py`, hand-written API doc pages, `dist/`+`site/` local clutter (gitignored, never tracked).
+
+## Key Files
+
+- `src/pykabutan/ticker.py` — Ticker facade; entry point for all per-stock data
+- `src/pykabutan/_internal/site.py` — every kabutan-specific constant (update here on site drift)
+- `src/pykabutan/_internal/parsers/` — pure soup/html→data functions, one module per kabutan page
+- `tests/fixtures/*.html` — verbatim kabutan.jp captures (2026-07-02); unit tests parse these, not fabricated HTML
+- `tasks/` — task tracking (done/ holds completed tasks TASK-001..015; refactor tasks continue from TASK-016)
+- `PYKABU_CODEBASE_ANALYSIS.md` — historical analysis of the predecessor `pykabu` codebase (reference only)
+
+## Kabutan URL Reference
+
+| Page | URL Pattern | Notes |
+|------|-------------|-------|
+| Main | `/stock/?code={code}` | stats `#stockinfo_i3 table`; profile `div.company_block table`; similar `dl.si_i1_dl2 a` |
+| OHLC | `/stock/kabuka?code={code}&ashi={interval}&page={page}` | `table.stock_kabuka_dwm` (all intervals); ashi: day/wek/mon/yar |
+| News | `/stock/news?code={code}&nmode={mode}` | `table.s_news_list`; nmode: 0=all,1=material,2=earnings,3=disclosure |
+| Finance | `/stock/finance?code={code}` | `div#finance_box`, ~20 tables identified by column signature; partially paywalled |
+| Holders | `/stock/holder?code={code}&tab={tab}` | `table.stock_holder_1`, MultiIndex header; date menu `div.stock_holder_title.date_menu a` |
+| Industry | `/themes/?industry={code}&market={market}` | `table.stock_table` |
+| Theme | `/themes/?theme={encoded}&market={market}` | `table.stock_table` |
+
+Nonexistent ticker → HTTP 404. Ticker codes may be alphanumeric (e.g. `135A`, `285A`).
+
+Canonical machine-readable versions of these constants live in `_internal/site.py`.

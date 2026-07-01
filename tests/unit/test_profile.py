@@ -1,7 +1,5 @@
 """Unit tests for Profile dataclass."""
 
-import pytest
-
 from pykabutan.profile import Profile
 
 

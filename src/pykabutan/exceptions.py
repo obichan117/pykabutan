@@ -4,8 +4,6 @@
 class PykabutanError(Exception):
     """Base exception for pykabutan."""
 
-    pass
-
 
 class TickerNotFoundError(PykabutanError):
     """Raised when a stock code doesn't exist on kabutan.jp."""
@@ -18,16 +16,17 @@ class TickerNotFoundError(PykabutanError):
 
 
 class ScrapingError(PykabutanError):
-    """Raised when HTML parsing fails (site structure may have changed)."""
+    """Raised when an expected page structure is missing.
 
-    def __init__(self, url: str, message: str | None = None):
-        self.url = url
+    This usually means kabutan.jp changed its layout and pykabutan needs
+    an update. The ``what`` attribute names the element that failed to parse.
+    """
+
+    def __init__(self, what: str, message: str | None = None):
+        self.what = what
         if message is None:
-            message = f"Failed to scrape data from {url}. Site structure may have changed."
+            message = (
+                f"Failed to parse {what} — kabutan.jp may have changed its layout. "
+                "Try upgrading pykabutan or report the issue."
+            )
         super().__init__(message)
-
-
-class ConfigurationError(PykabutanError):
-    """Raised for configuration issues."""
-
-    pass

@@ -6,7 +6,7 @@ Usage:
 
     ticker = pk.Ticker("7203")
     print(ticker.profile.name)      # トヨタ自動車
-    print(ticker.profile.per)       # 10.5
+    print(ticker.profile.per)       # 10.8
 
     df = ticker.history(period="30d")
     print(df)
@@ -16,21 +16,27 @@ Usage:
         print(t.code, t.profile.name)
 """
 
-__version__ = "0.1.0"
+from importlib.metadata import PackageNotFoundError, version
+
+try:
+    __version__ = version("pykabutan")
+except PackageNotFoundError:  # running from a source tree without installation
+    __version__ = "0.0.0"
 
 from pykabutan.config import config
 from pykabutan.exceptions import (
-    ConfigurationError,
     PykabutanError,
     ScrapingError,
     TickerNotFoundError,
 )
+from pykabutan.profile import Profile
 from pykabutan.search import list_industries, search_by_industry, search_by_theme
 from pykabutan.ticker import Ticker
 
 __all__ = [
     "__version__",
     "Ticker",
+    "Profile",
     "search_by_industry",
     "search_by_theme",
     "list_industries",
@@ -38,5 +44,4 @@ __all__ = [
     "PykabutanError",
     "TickerNotFoundError",
     "ScrapingError",
-    "ConfigurationError",
 ]
